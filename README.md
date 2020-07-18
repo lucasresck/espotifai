@@ -1,0 +1,2 @@
+# espotifai
+Automatic Playlist Generator
