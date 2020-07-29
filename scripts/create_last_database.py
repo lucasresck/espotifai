@@ -112,11 +112,6 @@ class User:
         
         return user_info
 
-class Playlist:
-
-    def __init__(self):
-        pass
-
 class Track:
 
     def __init__(self, network, filepath: str = '../data/tracks.csv'):
