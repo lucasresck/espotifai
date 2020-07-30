@@ -420,7 +420,7 @@ class Geo:
 
         country_info = {}
         country_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
-                                  for top in tag.get_geo_top_tracks(country, limit = limit)]
+                                  for top in self.network.get_geo_top_tracks(country, limit = limit)]
         country_info['topartists'] = [(artists.get_id_by_name(top.item.name), top.weight) 
-                                   for top in tag.get_geo_top_artists(country, limit = limit)]
+                                   for top in self.network.get_geo_top_artists(country, limit = limit)]
         return country_info
