@@ -8,6 +8,8 @@ import pylast
 import requests 
 import pandas as pd
 
+import time
+
 class User:
 
     def __init__(self, network, filepath: str):
@@ -85,7 +87,7 @@ class User:
                 f.write(str(user_id) + ',' + user_name + '\n')
         return user_id
 
-    def get_user_info(self, user_name: str) -> dict: 
+    def get_user_info(self, user_name: str, limit: int = 20) -> dict: 
         '''Get a lot of user information from last.fm and build it in a dictionary'''
 
         website = 'http://ws.audioscrobbler.com/2.0/?method=user.getinfo&user='
@@ -120,13 +122,13 @@ class User:
         user_info['recent_tracks'] = [tracks.get_id_by_name(recent.track.title, recent.track.artist.name) 
                                      for recent in user.get_recent_tracks()]
         user_info['top_tracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name),top.weight) 
-                                     for top in user.get_top_tracks()]
+                                     for top in user.get_top_tracks(limit = limit)]
         user_info['top_tags'] = [(tags.get_id_by_name(top.item.name), top.weight) 
-                                  for top in user.get_top_tags()]
+                                  for top in user.get_top_tags(limit = limit)]
         user_info['top_albums'] = [(albums.get_id_by_name(top.item.title, top.item.artist.name), top.weight)
-                                     for top in user.get_top_albums()]
+                                     for top in user.get_top_albums(limit = limit)]
         user_info['top_artists'] = [(artists.get_id_by_name(top.item.name), top.weight) 
-                                     for top in user.get_top_artists()]
+                                     for top in user.get_top_artists(limit = limit)]
         
         return user_info
 
@@ -168,7 +170,7 @@ class Track:
                 f.write(str(track_id) + ',' + artist_name + ',' + track_name + '\n')
         return track_id
 
-    def get_track_info(self, track_name: str, artist_name: str) -> dict:
+    def get_track_info(self, track_name: str, artist_name: str, limit: int = 20) -> dict:
         '''Given an artist name and track name, get track info'''
         track_info = {}
         track = self.network.get_track(artist_name, track_name)
@@ -182,10 +184,11 @@ class Track:
         track_info['published'] = self._set_to_date(track.get_wiki_published_date())
 
         tags = Tag(self.network)
-        track_info['toptags'] = [(tags.get_id_by_name(tag.item.name), tag.weight) for tag in track.get_top_tags()]
+        track_info['toptags'] = [(tags.get_id_by_name(tag.item.name), tag.weight) 
+                                  for tag in track.get_top_tags(limit = limit)]
         track_info['similar'] = [(similar.item.title, 
                                   similar.item.artist.name, 
-                                  similar.match) for similar in track.get_similar()]
+                                  similar.match) for similar in track.get_similar(limit = limit)]
         
         return track_info
 
@@ -227,7 +230,7 @@ class Artist:
                 f.write(str(artist_id) + ',' + artist_name + '\n')
         return artist_id
 
-    def get_artist_info(self, artist_name: str) -> dict:
+    def get_artist_info(self, artist_name: str, limit: int = 20) -> dict:
         '''Given an artist name, get artist info'''
         artist_info = {}
         artist = self.network.get_artist(artist_name)
@@ -242,12 +245,13 @@ class Artist:
         tracks = Track(self.network)
 
         artist_info['topalbums'] = [(albums.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
-                                    for top in artist.get_top_albums()]
-        artist_info['toptags'] = [(tags.get_id_by_name(top.item.name), top.weight) for top in artist.get_top_tags()]
+                                    for top in artist.get_top_albums(limit = limit)]
+        artist_info['toptags'] = [(tags.get_id_by_name(top.item.name), top.weight) 
+                                  for top in artist.get_top_tags(limit = limit)]
         artist_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
-                                    for top in artist.get_top_tracks()]
+                                    for top in artist.get_top_tracks(limit = limit)]
         artist_info['similar'] = [(similar.item.name, 
-                                  similar.match) for similar in artist.get_similar()]
+                                  similar.match) for similar in artist.get_similar(limit = limit)]
         
         return artist_info
 
@@ -289,7 +293,7 @@ class Album:
                 f.write(str(album_id) + ',' + artist_name + ',' + album_name + '\n')
         return album_id
 
-    def get_album_info(self, album_name: str, artist_name: str) -> dict:
+    def get_album_info(self, album_name: str, artist_name: str, limit: int = 20) -> dict:
         '''Given an artist name and album name, get album info'''
         album_info = {}
         album = self.network.get_album(artist_name, album_name)
@@ -304,7 +308,7 @@ class Album:
         tracks = Track(self.network)
 
         album_info['tracks'] = [tracks.get_id_by_name(track.title, track.artist.name) for track in album.get_tracks()]
-        album_info['toptags'] = [(tags.get_id_by_name(top.item.name), top.weight) for top in album.get_top_tags()]
+        album_info['toptags'] = [(tags.get_id_by_name(top.item.name), top.weight) for top in album.get_top_tags(limit = limit)]
         
         return album_info
 
@@ -346,7 +350,7 @@ class Tag:
                 f.write(str(tag_id) + ',' + tag + '\n')
         return tag_id
 
-    def get_tag_info(self, tag_name: str) -> dict:
+    def get_tag_info(self, tag_name: str, limit: int = 20) -> dict:
         '''Given an artist name and tag name, get tag info'''
         tag_info = {}
         website = 'http://ws.audioscrobbler.com/2.0/?method=tag.getinfo&tag=' 
@@ -365,8 +369,58 @@ class Tag:
         albums = Album(self.network)
         tracks = Track(self.network)
 
-        tag_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) for top in tag.get_top_tracks()]
-        tag_info['topartists'] = [(artists.get_id_by_name(top.item.name), top.weight) for top in tag.get_top_artists()]
-        tag_info['topalbums'] = [(albums.get_id_by_name(top.item.title, top.item.artist.name), top.weight) for top in tag.get_top_albums()]
+        tag_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
+                                  for top in tag.get_top_tracks(limit = limit)]
+        tag_info['topartists'] = [(artists.get_id_by_name(top.item.name), top.weight) 
+                                   for top in tag.get_top_artists(limit = limit)]
+        tag_info['topalbums'] = [(albums.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
+                                  for top in tag.get_top_albums(limit = limit)]
         
         return tag_info
+
+class Library: 
+
+    def __init__(self, network):
+        
+        self.network = network
+
+    def get_library(self, user_name: str) -> dict:  
+        '''A paginated list of all the artists in a user's library, with play
+        counts and tag counts'''
+        user_library = {}
+        artists = Artist(self.network)
+
+        website = 'http://ws.audioscrobbler.com/2.0/?method=library.getartists&api_key='
+        website += self.network.api_key + '&user=' + user_name + '&format=json&page='
+        get_json = requests.get(website)
+        library_json = json.loads(get_json.content)
+        pages = int(library_json['artists']['@attr']['totalPages'])
+
+        for page in range(1,pages + 1):
+            website = website.replace('page=','page='+str(page))
+            get_json = requests.get(website)
+            library_json = json.loads(get_json.content)
+            for artist in library_json['artists']['artist']:
+                user_library[artists.get_id_by_name(artist['name'])] = int(artist['playcount'])
+            time.sleep(5)
+            
+        return user_library
+
+class Geo:
+
+    def __init__(self, network):
+
+        self.network = network
+
+    def get_country_top(self, country: str, limit: int = 50) -> dict:
+        '''Get top tracks and artists in the country'''
+
+        artists = Artist(self.network)
+        tracks = Track(self.network)
+
+        country_info = {}
+        country_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
+                                  for top in tag.get_geo_top_tracks(country, limit = limit)]
+        country_info['topartists'] = [(artists.get_id_by_name(top.item.name), top.weight) 
+                                   for top in tag.get_geo_top_artists(country, limit = limit)]
+        return country_info
