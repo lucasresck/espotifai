@@ -10,20 +10,21 @@ import pandas as pd
 
 class User:
 
-    def __init__(self, network):
+    def __init__(self, network, filepath: str):
 
         self.network = network
-
-    def write_users_names(self, user_list: list, filepath: str, level: int = 5, limit: int = 20):
-        '''From a list of usernames, write a netwotk list of users in file.
-           The file should be a csv. '''
         if not os.path.exists(filepath): 
             try: 
                 with open(filepath, 'w') as f:
                     f.write('user_id, user_name\n')
             except: 
                 raise Exception('Filename not found. Please, insert all path.')
-        with open(filepath, 'r') as f:
+        self.users_file = filepath
+
+    def write_users_names(self, user_list: list, level: int = 5, limit: int = 20):
+        '''From a list of usernames, write a netwotk list of users in file.
+           The file should be a csv. '''
+        with open(self.users_file, 'r') as f:
             line = f.readline()
             while line != '':                               # Get the last user id written
                 last_line = line 
@@ -33,11 +34,11 @@ class User:
             except ValueError:
                 self.last_user_id = 0
         ids_users = [str(self.last_user_id + 1 + i) + ',' + user_list[i] for i in range(len(user_list))]
-        self._write_in_file(ids_users, filepath)
+        self._write_in_file(ids_users)
         self.last_user_id += len(user_list)
-        for username in user_list:
-            user = self.network.get_user(username = username)
-            self._build_network(user, level, limit, filepath)
+        for user_name in user_list:
+            user = self.network.get_user(username = user_name)
+            self._build_network(user, level, limit)
 
     def _get_friends(self, user, limit: int) -> list:
         '''Get [limit] number of friends and return a list'''
@@ -48,40 +49,57 @@ class User:
         name_friends = [link.name for link in friends]
         return name_friends 
 
-    def _build_network(self, user, level: int, limit: int, filepath: str): 
+    def _build_network(self, user, level: int, limit: int): 
         '''Get the frients and build a network'''
         friends = self._get_friends(user, limit = limit)
         id_and_friends = [str(self.last_user_id + i + 1) + ',' + friends[i] for i in range(len(friends))] 
-        self._write_in_file(id_and_friends, filepath)
+        self._write_in_file(id_and_friends)
         self.last_user_id += len(friends)
         if level > 1:
             for friend in friends: 
-                self._build_network(self.network.get_user(friend), level - 1, limit, filepath)
+                self._build_network(self.network.get_user(friend), level - 1, limit)
         else:
             return
         print('Level {} compĺeted'.format(level))
 
-    def _write_in_file(self, lst: list, filepath: str):
+    def _write_in_file(self, lst: list):
         '''Write a list in a filepath. Auxliary funcion'''
-        with open(filepath, 'a') as f: 
+        with open(self.users_file, 'a') as f: 
             for i in lst:
                 f.write(i)
                 f.write('\n')
 
-    def get_user_info(self, username: str) -> dict: 
+    def get_id_by_name(self, user_name):
+        '''Given a user name return a user_id if it
+        exists, or create one if it does not;'''
+
+        users = pd.read_csv(self.users_file, index_col='user_id')
+        df_artist = users[users.artist_name == user_name]
+        if len(df_artist) == 1:
+            user_id = user_id.index[0]
+        elif len(df_artist) > 1:
+            raise Exception('Two tracks with same artist name and same track name')
+        else: 
+            user_id = len(users) + 1
+            with open(self.users_file, 'a') as f:
+                f.write(str(user_id) + ',' + user_name + '\n')
+        return user_id
+
+    def get_user_info(self, user_name: str) -> dict: 
         '''Get a lot of user information from last.fm and build it in a dictionary'''
 
         website = 'http://ws.audioscrobbler.com/2.0/?method=user.getinfo&user='
-        website += username 
+        website += user_name 
         website += '&api_key='
         website += self.network.api_key
         website += '&format=json'
         get_json = requests.get(website)
         user_info_json = json.loads(get_json.content)['user']
         
-        user = self.network.get_user(username)
+        user = self.network.get_user(user_name)
         user_info = {}
-        user_info['name'] = username
+        user_info['id'] = self.get_id_by_name(user_name)
+        user_info['name'] = user_name
         user_info['subscriber'] = int(user.is_subscriber())
         user_info['playcount'] = user.get_playcount()
         user_info['registered_since'] = user.get_registered()
@@ -124,10 +142,19 @@ class Track:
                     f.write('track_id,artist_name,track_name\n')
             except: 
                 raise Exception('Problem in creating file. Maby the folder does not exist.')
+            
+    def _set_to_date(self, date: str) -> str:
+        '''Given [day] [month] [year] [hour] pattern, return year-mm-dd'''
+        day, month, year, _ = date.split() 
+        year = year[:4]
+        month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
+                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
+        return year + '-' + month + '-' + day
 
-    def get_id_by_name(self, track_name, artist_name):
+    def get_id_by_name(self, track_name: str, artist_name: str) -> int: 
         '''Given an artist name and track name, return a track id if it
-        exists, or create one if it does not;'''
+        exists, or create one if it does not'''
 
         tracks = pd.read_csv(self.tracks_file, index_col='track_id')
         df_track = tracks[(tracks.artist_name == artist_name) & (tracks.track_name == track_name)]
@@ -141,6 +168,27 @@ class Track:
                 f.write(str(track_id) + ',' + artist_name + ',' + track_name + '\n')
         return track_id
 
+    def get_track_info(self, track_name: str, artist_name: str) -> dict:
+        '''Given an artist name and track name, get track info'''
+        track_info = {}
+        track = self.network.get_track(artist_name, track_name)
+        track_info['id'] = self.get_id_by_name(track_name, artist_name)
+        track_info['name'] = track_name
+        track_info['artist'] = artist_name
+        track_info['duration'] = track.get_duration()
+        track_info['listeners'] = track.get_listener_count()
+        track_info['playcount'] = track.get_playcount()
+        track_info['album'] = track.get_album().title
+        track_info['published'] = self._set_to_date(track.get_wiki_published_date())
+
+        tags = Tag(self.network)
+        track_info['toptags'] = [(tags.get_id_by_name(tag.item.name), tag.weight) for tag in track.get_top_tags()]
+        track_info['similar'] = [(similar.item.title, 
+                                  similar.item.artist.name, 
+                                  similar.match) for similar in track.get_similar()]
+        
+        return track_info
+
 class Artist:
 
     def __init__(self, network, filepath: str = '../data/artists.csv'):
@@ -153,6 +201,15 @@ class Artist:
                     f.write('artist_id,artist_name\n')
             except: 
                 raise Exception('Problem in creating file. Maby the folder does not exist.')
+            
+    def _set_to_date(self, date: str) -> str:
+        '''Given [day] [month] [year] [hour] pattern, return year-mm-dd'''
+        day, month, year, _ = date.split() 
+        year = year[:4]
+        month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
+                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
+        return year + '-' + month + '-' + day
 
     def get_id_by_name(self, artist_name):
         '''Given an artist name return a artist_id if it
@@ -170,6 +227,30 @@ class Artist:
                 f.write(str(artist_id) + ',' + artist_name + '\n')
         return artist_id
 
+    def get_artist_info(self, artist_name: str) -> dict:
+        '''Given an artist name, get artist info'''
+        artist_info = {}
+        artist = self.network.get_artist(artist_name)
+        artist_info['id'] = self.get_id_by_name(artist_name)
+        artist_info['name'] = artist_name
+        artist_info['listeners'] = artist.get_listener_count()
+        artist_info['plays'] = artist.get_playcount()
+        artist_info['published'] = self._set_to_date(artist.get_bio_published_date())
+
+        tags = Tag(self.network)
+        albums = Album(self.network)
+        tracks = Track(self.network)
+
+        artist_info['topalbums'] = [(albums.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
+                                    for top in artist.get_top_albums()]
+        artist_info['toptags'] = [(tags.get_id_by_name(top.item.name), top.weight) for top in artist.get_top_tags()]
+        artist_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
+                                    for top in artist.get_top_tracks()]
+        artist_info['similar'] = [(similar.item.name, 
+                                  similar.match) for similar in artist.get_similar()]
+        
+        return artist_info
+
 class Album:
 
     def __init__(self, network, filepath: str = '../data/albums.csv'):
@@ -182,6 +263,15 @@ class Album:
                     f.write('album_id,artist_name,album_name\n')
             except: 
                 raise Exception('Problem in creating file. Maby the folder does not exist.')
+            
+    def _set_to_date(self, date: str) -> str:
+        '''Given [day] [month] [year] [hour] pattern, return year-mm-dd'''
+        day, month, year, _ = date.split() 
+        year = year[:4]
+        month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
+                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
+        return year + '-' + month + '-' + day
             
     def get_id_by_name(self, album_name, artist_name):
         '''Given an artist name and album name, return a album id if it
@@ -199,6 +289,25 @@ class Album:
                 f.write(str(album_id) + ',' + artist_name + ',' + album_name + '\n')
         return album_id
 
+    def get_album_info(self, album_name: str, artist_name: str) -> dict:
+        '''Given an artist name and album name, get album info'''
+        album_info = {}
+        album = self.network.get_album(artist_name, album_name)
+        album_info['id'] = self.get_id_by_name(album_name, artist_name)
+        album_info['name'] = album_name
+        album_info['artist'] = artist_name
+        album_info['listeners'] = album.get_listener_count()
+        album_info['playcount'] = album.get_playcount()
+        album_info['published'] = self._set_to_date(album.get_wiki_published_date())
+        
+        tags = Tag(self.network)
+        tracks = Track(self.network)
+
+        album_info['tracks'] = [tracks.get_id_by_name(track.title, track.artist.name) for track in album.get_tracks()]
+        album_info['toptags'] = [(tags.get_id_by_name(top.item.name), top.weight) for top in album.get_top_tags()]
+        
+        return album_info
+
 class Tag:
 
     def __init__(self, network, filepath: str = '../data/tags.csv'):
@@ -211,6 +320,15 @@ class Tag:
                     f.write('tag_id,tag\n')
             except: 
                 raise Exception('Problem in creating file. Maby the folder does not exist.')
+            
+    def _set_to_date(self, date: str) -> str:
+        '''Given [day] [month] [year] [hour] pattern, return year-mm-dd'''
+        day, month, year, _ = date.split() 
+        year = year[:4]
+        month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
+                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
+        return year + '-' + month + '-' + day
             
     def get_id_by_name(self, tag,):
         '''Given a tag, return a tag id if it
@@ -227,3 +345,28 @@ class Tag:
             with open(self.tags_file, 'a') as f:
                 f.write(str(tag_id) + ',' + tag + '\n')
         return tag_id
+
+    def get_tag_info(self, tag_name: str) -> dict:
+        '''Given an artist name and tag name, get tag info'''
+        tag_info = {}
+        website = 'http://ws.audioscrobbler.com/2.0/?method=tag.getinfo&tag=' 
+        website += tag_name + '&api_key=' + self.network.api_key + '&format=json'
+        get_json = requests.get(website)
+        tag_info_json = json.loads(get_json.content)
+
+        tag = self.network.get_tag(tag_name)
+        tag_info['id'] = self.get_id_by_name(tag_name)
+        tag_info['name'] = tag_name
+        tag_info['reached'] = tag_info_json['reach']
+        tag_info['taggings'] = tag_info_json['total']
+        tag_info['published'] = self._set_to_date(tag.get_wiki_published_date())
+        
+        artists = Artist(self.network)
+        albums = Album(self.network)
+        tracks = Track(self.network)
+
+        tag_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) for top in tag.get_top_tracks()]
+        tag_info['topartists'] = [(artists.get_id_by_name(top.item.name), top.weight) for top in tag.get_top_artists()]
+        tag_info['topalbums'] = [(albums.get_id_by_name(top.item.title, top.item.artist.name), top.weight) for top in tag.get_top_albums()]
+        
+        return tag_info
