@@ -18,7 +18,7 @@ class User:
         if not os.path.exists(filepath): 
             try: 
                 with open(filepath, 'w') as f:
-                    f.write('user_id, user_name\n')
+                    f.write('user_id,user_name\n')
             except: 
                 raise Exception('Filename not found. Please, insert all path.')
         self.users_file = filepath
@@ -62,7 +62,8 @@ class User:
                 self._build_network(self.network.get_user(friend), level - 1, limit)
         else:
             return
-        print('Level {} compĺeted'.format(level))
+        if self.last_user_id % 1000 == 0: 
+            print('Last User is {}'.format(self.last_user_id))
 
     def _write_in_file(self, lst: list):
         '''Write a list in a filepath. Auxliary funcion'''
@@ -134,7 +135,7 @@ class User:
 
 class Track:
 
-    def __init__(self, network, filepath: str = '../data/tracks.csv'):
+    def __init__(self, network, filepath: str = '../data/lastfm-api/tracks.csv'):
 
         self.network = network
         self.tracks_file = filepath
@@ -194,7 +195,7 @@ class Track:
 
 class Artist:
 
-    def __init__(self, network, filepath: str = '../data/artists.csv'):
+    def __init__(self, network, filepath: str = '../data/lastfm-api/artists.csv'):
 
         self.network = network
         self.artists_file = filepath
@@ -257,7 +258,7 @@ class Artist:
 
 class Album:
 
-    def __init__(self, network, filepath: str = '../data/albums.csv'):
+    def __init__(self, network, filepath: str = '../data/lastfm-api/albums.csv'):
 
         self.network = network
         self.albums_file = filepath
@@ -314,7 +315,7 @@ class Album:
 
 class Tag:
 
-    def __init__(self, network, filepath: str = '../data/tags.csv'):
+    def __init__(self, network, filepath: str = '../data/lastfm-api/tags.csv'):
 
         self.network = network
         self.tags_file = filepath
