@@ -187,26 +187,40 @@ class Track:
 
     def get_track_info(self, track_name: str, artist_name: str, limit: int = 20) -> dict:
         '''Given an artist name and track name, get track info'''
+
+        website = 'http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key='
+        website += self.network.api_key
+        website += '&artist=' + artist_name + '&track=' + track_name
+        website += '&format=json'
+        get_json = requests.get(website)
+        try: 
+            track_info_json = json.loads(get_json.content)['track']
+        except KeyError: 
+            print(track_name + ': ' + json.loads(get_json.content)['message'])
+            return {}
+        except json.JSONDecodeError:
+            print(track_name + ': error ' + str(get_json.status_code))
+            return {}
+
         track_info = {}
         track = self.network.get_track(artist_name, track_name)
         track_info['name'] = track_name
         track_info['artist'] = artist_name
         try: 
-            track_info['duration'] = track.get_duration()
+            track_info['duration'] = track_info_json['duration']
         except pylast.WSError:
             print(track_name + ' not Found.')
             return {}
-        track_info['listeners'] = track.get_listener_count()
-        track_info['playcount'] = track.get_playcount()
+        track_info['listeners'] = track_info_json['listeners']
+        track_info['playcount'] = track_info_json['playcount']
         try: 
-            track_info['album'] = track.get_album().title
-        except AttributeError:
+            track_info['album'] = track_info_json['album']['title']
+        except KeyError:
             track_info['album'] = None
         try: 
-            track_info['published'] = self._set_to_date(track.get_wiki_published_date())
-        except AttributeError:
+            track_info['published'] = self._set_to_date(track_info_json['wiki']['published'])
+        except KeyError:
             track_info['published'] = None
-
         tags = Tag(self.network)
         track_info['top_tags'] = [(tags.get_id_by_name(tag.item.name), tag.weight) 
                                   for tag in track.get_top_tags(limit = limit)]
