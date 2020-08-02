@@ -154,7 +154,7 @@ class Track:
                 with open(filepath, 'w') as f:
                     f.write('track_id\tartist_name\ttrack_name\n')
             except: 
-                raise Exception('Problem in creating file. Maby the folder does not exist.')
+                raise Exception('Problem in creating file. Maybe the folder does not exist.')
         self.tracks_df = pd.read_csv(self.tracks_file, index_col='track_id', sep = '\t')
             
     def _set_to_date(self, date: str) -> str:
@@ -162,7 +162,7 @@ class Track:
         day, month, year, _ = date.split() 
         year = year[:4]
         month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
-                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'May':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
                  'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
         return year + '-' + month + '-' + day
 
@@ -189,14 +189,23 @@ class Track:
         '''Given an artist name and track name, get track info'''
         track_info = {}
         track = self.network.get_track(artist_name, track_name)
-        track_info['id'] = self.get_id_by_name(track_name, artist_name)
         track_info['name'] = track_name
         track_info['artist'] = artist_name
-        track_info['duration'] = track.get_duration()
+        try: 
+            track_info['duration'] = track.get_duration()
+        except pylast.WSError:
+            print(track_name + ' not Found.')
+            return {}
         track_info['listeners'] = track.get_listener_count()
         track_info['playcount'] = track.get_playcount()
-        track_info['album'] = track.get_album().title
-        track_info['published'] = self._set_to_date(track.get_wiki_published_date())
+        try: 
+            track_info['album'] = track.get_album().title
+        except AttributeError:
+            track_info['album'] = None
+        try: 
+            track_info['published'] = self._set_to_date(track.get_wiki_published_date())
+        except AttributeError:
+            track_info['published'] = None
 
         tags = Tag(self.network)
         track_info['top_tags'] = [(tags.get_id_by_name(tag.item.name), tag.weight) 
@@ -230,7 +239,7 @@ class Artist:
         day, month, year, _ = date.split() 
         year = year[:4]
         month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
-                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'May':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
                  'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
         return year + '-' + month + '-' + day
 
@@ -296,7 +305,7 @@ class Album:
         day, month, year, _ = date.split() 
         year = year[:4]
         month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
-                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'May':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
                  'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
         return year + '-' + month + '-' + day
             
@@ -357,7 +366,7 @@ class Tag:
         day, month, year, _ = date.split() 
         year = year[:4]
         month = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 
-                 'Mai':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
+                 'May':'05', 'Jun':'06', 'Jul':'07', 'Aug':'08',
                  'Sep':'07', 'Oct':'10', 'Nov':'11', 'Dec':'12' }[month]
         return year + '-' + month + '-' + day
             
