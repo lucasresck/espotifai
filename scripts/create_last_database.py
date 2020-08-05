@@ -224,9 +224,17 @@ class Track:
         tags = Tag(self.network)
         track_info['top_tags'] = [(tags.get_id_by_name(tag.item.name), tag.weight) 
                                   for tag in track.get_top_tags(limit = limit)]
-        track_info['similar'] = [(similar.item.title, 
-                                  similar.item.artist.name, 
-                                  similar.match) for similar in track.get_similar(limit = limit)]
+        for i in range(3): 
+            try: 
+                track_info['similar'] = [(similar.item.title, 
+                                        similar.item.artist.name, 
+                                        similar.match) for similar in track.get_similar(limit = limit)]
+                break
+            except pylast.MalformedResponseError: 
+                if i == 2:
+                    track_info['similar'] = None
+                else: 
+                    continue
         
         return track_info
 
@@ -275,11 +283,13 @@ class Artist:
         '''Given an artist name, get artist info'''
         artist_info = {}
         artist = self.network.get_artist(artist_name)
-        artist_info['id'] = self.get_id_by_name(artist_name)
         artist_info['name'] = artist_name
         artist_info['listeners'] = artist.get_listener_count()
         artist_info['plays'] = artist.get_playcount()
-        artist_info['published'] = self._set_to_date(artist.get_bio_published_date())
+        try: 
+            artist_info['published'] = self._set_to_date(artist.get_bio_published_date())
+        except:
+            artist_info['published'] = None
 
         tags = Tag(self.network)
         albums = Album(self.network)
@@ -291,9 +301,17 @@ class Artist:
                                   for top in artist.get_top_tags(limit = limit)]
         artist_info['toptracks'] = [(tracks.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
                                     for top in artist.get_top_tracks(limit = limit)]
-        artist_info['similar'] = [(similar.item.name, 
-                                  similar.match) for similar in artist.get_similar(limit = limit)]
-        
+        for i in range(3):                          
+            try: 
+                artist_info['similar'] = [(similar.item.name, 
+                                        similar.match) for similar in artist.get_similar(limit = limit)]
+                break
+            except pylast.MalformedResponseError:
+                if i == 2: 
+                    artist_info['similar'] = None
+                else: 
+                    continue
+
         return artist_info
 
 class Album:
@@ -404,14 +422,23 @@ class Tag:
         website = 'http://ws.audioscrobbler.com/2.0/?method=tag.getinfo&tag=' 
         website += tag_name + '&api_key=' + self.network.api_key + '&format=json'
         get_json = requests.get(website)
-        tag_info_json = json.loads(get_json.content)
+        try: 
+            tag_info_json = json.loads(get_json.content)['tag']
+        except KeyError: 
+            print(tag_name + ': ' + json.loads(get_json.content)['message'])
+            return {}
+        except json.JSONDecodeError:
+            print(tag_name + ': error ' + str(get_json.status_code))
+            return {}
 
         tag = self.network.get_tag(tag_name)
-        tag_info['id'] = self.get_id_by_name(tag_name)
         tag_info['name'] = tag_name
         tag_info['reached'] = tag_info_json['reach']
         tag_info['taggings'] = tag_info_json['total']
-        tag_info['published'] = self._set_to_date(tag.get_wiki_published_date())
+        try: 
+            tag_info['published'] = self._set_to_date(tag_info_json['wiki']['published'])
+        except:
+            tag_info['published'] = None
         
         artists = Artist(self.network)
         albums = Album(self.network)
