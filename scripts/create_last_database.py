@@ -236,6 +236,8 @@ class Track:
                 else: 
                     continue
         
+        tags.write_to_csv()
+        
         return track_info
 
 class Artist:
@@ -312,6 +314,10 @@ class Artist:
                 else: 
                     continue
 
+        tags.write_to_csv()
+        albums.write_to_csv()
+        tracks.write_to_csv()
+
         return artist_info
 
 class Album:
@@ -372,6 +378,9 @@ class Album:
 
         album_info['tracks'] = [tracks.get_id_by_name(track.title, track.artist.name) for track in album.get_tracks()]
         album_info['toptags'] = [(tags.get_id_by_name(top.item.name), top.weight) for top in album.get_top_tags(limit = limit)]
+        
+        tags.write_to_csv()
+        tracks.write_to_csv()
         
         return album_info
 
@@ -450,6 +459,10 @@ class Tag:
                                    for top in tag.get_top_artists(limit = limit)]
         tag_info['topalbums'] = [(albums.get_id_by_name(top.item.title, top.item.artist.name), top.weight) 
                                   for top in tag.get_top_albums(limit = limit)]
+                                  
+        artists.write_to_csv()
+        albums.write_to_csv()
+        tracks.write_to_csv()
         
         return tag_info
 
@@ -459,26 +472,46 @@ class Library:
         
         self.network = network
 
-    def get_library(self, user_name: str) -> dict:  
+    def get_library(self, user_name: str, printing = True) -> dict:  
         '''A paginated list of all the artists in a user's library, with play
         counts and tag counts'''
         user_library = {}
         artists = Artist(self.network)
 
         website = 'http://ws.audioscrobbler.com/2.0/?method=library.getartists&api_key='
-        website += self.network.api_key + '&user=' + user_name + '&format=json&page='
+        website += self.network.api_key + '&user=' + user_name + '&format=json&page=1'
         get_json = requests.get(website)
         library_json = json.loads(get_json.content)
         pages = int(library_json['artists']['@attr']['totalPages'])
+        print('There are {} pages.'.format(pages))
 
         for page in range(1,pages + 1):
-            website = website.replace('page=','page='+str(page))
-            get_json = requests.get(website)
-            library_json = json.loads(get_json.content)
-            for artist in library_json['artists']['artist']:
-                user_library[artists.get_id_by_name(artist['name'])] = int(artist['playcount'])
-            time.sleep(5)
+
+            for i in range(3): 
+                try: 
+                    website_page = website.replace('page=1','page='+str(page))
+                    get_json = requests.get(website_page)
+                    library_json = json.loads(get_json.content)
+                except Exception as e: 
+                    if i == 2: print(e)
+                    time.sleep(1)
             
+            try: 
+                for artist in library_json['artists']['artist']:
+                    user_library[artists.get_id_by_name(artist['name'])] = int(artist['playcount'])
+            except KeyError: 
+                print(library_json.keys())
+            except Exception as e: 
+                print(e)
+                print("Page with problem: {}".format(page))
+                break
+
+            if printing: 
+                print('Page {} - DONE'.format(page))
+            time.sleep(1)
+            
+        artists.write_to_csv()
+
         return user_library
 
 class Geo:
@@ -498,4 +531,8 @@ class Geo:
                                   for top in self.network.get_geo_top_tracks(country, limit = limit)]
         country_info['topartists'] = [(artists.get_id_by_name(top.item.name), top.weight) 
                                    for top in self.network.get_geo_top_artists(country, limit = limit)]
+                                   
+        artists.write_to_csv()
+        tracks.write_to_csv()
+
         return country_info
