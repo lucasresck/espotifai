@@ -132,13 +132,13 @@ Ideas:
 
 \section{Baseline Model}
 
-TO DO 
-\begin{enumerate}
-  \item Qual o modelo mais simples que eu conseguiria pensar? Usando last
-  seria esse: Toma uma playlist, pega a interseção dos artistas preferidos
-  pelo usuario (top artists) com os artistas getSimilar dos tracks da playlist
-  e seleciona as top tracks desse artista. Isso explora bem o last, o que acha
-  Lucas? Tem outra ideia? 
-\end{enumerate}
+It's pretty simple and uses information retrieved from Last.fm. From a
+playlist (from Spotify), we get all the artists who participate in at least
+one song and attribute a weight of the number of times it appears in the playlist. After we get the 200 top artists of the user, weighted by the number of
+times the user listened to him/her. With that information, we get the
+intersection of the two. If it is empty, the method does not work, unhappily.
+With the intersection, we take the 10 artists with major weight and for each,
+we get the 10 top tracks and recommend the $n$ tracks with major weight
+(number of playcounts by all the users in the plataform). 
 
 \end{document}
