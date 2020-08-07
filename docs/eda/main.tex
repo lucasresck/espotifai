@@ -44,11 +44,11 @@
 
 \section{The Datasets}
 
-In order to obtain user information, we generated a list of usernames in a
+In order to get user information, we generated a list of usernames in a
 networked way.  We visited the Last.fm webpage of several artists and
 considered three random users in the top listenings from three different
 coutries: Brazil, USA and United Kingdom. Using only these usernames, through
-the command \lstinline{python generate_lastfm_users.py},  we get additional
+the command \lstinline{generate_lastfm_users.py},  we get additional
 Last.fm usernames using the \lstinline{user.getFriends} method from the API. 
 With some loops, we can get the network (or part of it). It's possible to have
 some bias, unknown yet.
@@ -69,13 +69,20 @@ with several functions. However, in order to retrieve all the information, it
 takes a long time to build all datasets: \textbf{Users info}, \textbf{Tracks
 info}, \textbf{Artists info} and \textbf{Tags info}, because we retrive a lot
 of information in different links from the same API. That's why in the first
-analysis we only considered a subset. We got the users randomly from the hole
-dataset of users. The considered datasets were: 
+analysis we only considered a subset. We got the users randomly from the whole
+dataset of users. We saved the information in a \lstinline{json} format. The
+variable types were fixed to help the analysis (convertion
+\lstinline{string->integer}). The dates were converted to a standart type and
+after to datetime. Actually, as we used an API, the data wasn't bad. We
+created ids for tracks, tags and artists and save it in a \lstinline{.csv}
+file. This structure allow us to save storage. 
+
+The considered datasets were: 
 
 \begin{enumerate}
   \item \textbf{Users}: information about if is subscriber, when he/she 
   has registered, playcounts, country, top artists and tracks and loved
-  tracks. (no user had gender, age and number of playlists information and and
+  tracks. (no user had gender, age and number of playlists information and
   we deregarded.)
   \begin{itemize}
     \item Users: 1000; users with no information: 1.
@@ -101,24 +108,37 @@ dataset of users. The considered datasets were:
 
 \begin{figure}[!h]
   \centering
-  \label{fig:subscriber-registration}
-  \includegraphics[width = \textwidth]{../../images/subscriber-registration.png}
-\end{figure}
-
-\begin{figure}[!h]
-  \centering
   \label{fig:top-loved}
   \includegraphics[width = \textwidth]{../../images/top-loved-tracks.png}
 \end{figure}
 
 \begin{figure}[!h]
   \centering
-  \label{fig:top-loved}
+  \label{fig:artist-info}
   \includegraphics[width = \textwidth]{../../images/artist_info.png}
 \end{figure}
 
 \section{Gained Insights}
 
+TO DO 
+
+Ideas:
+\begin{enumerate}
+  \item Pareto's distribution in the data; 
+  \item getSimilar is a good function from last.fm
+  \item Last.fm has information about general aspects of the user, but it's
+  not good to create models fow playlists. 
+\end{enumerate}
+
 \section{Baseline Model}
+
+It's pretty simple and uses information retrieved from Last.fm. From a
+playlist (from Spotify), we get all the artists who participate in at least
+one song and attribute a weight of the number of times it appears in the playlist. After we get the 200 top artists of the user, weighted by the number of
+times the user listened to him/her. With that information, we get the
+intersection of the two. If it is empty, the method does not work, unhappily.
+With the intersection, we take the 10 artists with major weight and for each,
+we get the 10 top tracks and recommend the $n$ tracks with major weight
+(number of playcounts by all the users in the plataform). 
 
 \end{document}
