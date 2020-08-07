@@ -65,9 +65,14 @@ if __name__ == '__main__':
         limit = int(limit)
     if path: 
         if not os.path.exists(path):
-            path = '.'
+            path = 'data/lastfm-api'
     else:
-        path = '.'
+        path = 'data/lastfm-api'
+    
+    if not os.path.exists('data'):
+        os.mkdir('data')
+    if not os.path.exists(path):
+        os.mkdir(path)
     
     write_users = User(network, os.path.join(path, 'users_lastfm.csv'))
     write_users.write_users_names(users, level, limit)
