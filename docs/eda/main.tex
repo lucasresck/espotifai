@@ -113,7 +113,9 @@ instrumental). At the end, we have:
   \qquad
   \subfloat[Distribution of the duration of a track (in ms). We see that the mode is around 3min20s.]{{\includegraphics[width=0.3\textwidth]{../../images/sp_duration.png} }}%
   \qquad
-  \subfloat[Tracks have artists, and artists have genres. This is the result of our analysis of the genres of the tracks. We see what we would expect: pop, rock, rap and hip hop in the list. The percentages seem small, but there are many genres to consider (in our sample, 2297 genres). This analysis was generated on a sample of the data.]{{\includegraphics[width=0.3\textwidth]{../../images/sp_genres.png} }}%
+  \subfloat[Tracks have artists, and artists have genres. This is the result of our analysis of the genres of the tracks. We see what we would expect: pop, rock, rap and hip hop in the list. The percentages seem small, but there are many genres to consider (in our sample, 2297 genres). This analysis was generated on a sample of the data.]
+  {\raisebox{-6ex}%
+  {\includegraphics[width=0.3\textwidth]{../../images/sp_genres.png} }}%
   \caption{Visualizations of the data.}%
   \label{fig:example}%
 \end{figure}
@@ -174,11 +176,15 @@ The considered datasets were:
   \item The distribution of several relations in the data respects a Pareto
   Distribution. It suggests a structure that can be modelled. 
   \item The functions \lstinline{top} and \lstinline{similar} can be useful,
-  bbecause it has global information from the Last.fm. 
+  because it has global information from the Last.fm. 
   \item The dataset from Spotify is the unique with playlist information and
   is the principal for the next work. 
   \item Age and country seems to influenciate less than we thought. Lot of
-  missing values.  
+  missing values.
+  \item The distributions of the Spotify audio features are very similar to those
+  present on the
+  \href{https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/}{Spotify's Web API}.
+  It suggests our data is quite representative.
 \end{enumerate}
 
 \section{Baseline Model}
