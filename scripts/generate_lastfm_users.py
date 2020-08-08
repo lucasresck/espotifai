@@ -16,8 +16,8 @@ def main(argv):
     try:
         opts, _ = getopt.getopt(argv,"hk:s:u:n:l:p:",["api_key=","api_secret=", "user=", "level=", "limit=", "path="])
     except getopt.GetoptError:
-            print('''generate_lastfm_users.py -k <api_key> -s <api_secret>
-                   -u <user_to_start> -n <level> -l <limit> -p <path: optional>''')
+        print('''generate_lastfm_users.py -k <api_key> -s <api_secret>
+               -u <user_to_start> -n <level> -l <limit> -p <path: optional>''')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
