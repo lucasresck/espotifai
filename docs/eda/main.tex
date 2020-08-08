@@ -6,6 +6,8 @@
 \usepackage[margin=2cm]{geometry}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{subfig}
+
 \lstset{
   language=bash,
   basicstyle=\ttfamily
@@ -60,6 +62,61 @@ website, in special
 music business and that was the reason for us to use. 
 
 \subsection{Spotify Database}
+
+We used \href{https://spotipy.readthedocs.io/en/2.13.0/}{Spotipy} Python package
+to connect with Spotify's Web API.
+It allows us to gather information about public playlists, tracks and artists.
+Using the dataset of existing Last.fm users, we sampled a number of users and
+tested them to see if they have an account on Spotify. This way, we gathered
+information about these users' playlists. Everything that Spotify's API returns
+is a \lstinline{.json} file. Playlists data were treated and saved as an
+\lstinline{.pkl} file. Each track in the playlists dataset contains an ID, which
+identifies the tracks on Spotify and allows us to search for the tracks information.
+So we did it, treated the dataset and saved too. Again, we searched for the artists
+of the tracks information and what is called \textit{audio features} of the tracks,
+that is, a pool of technical metrics like \textit{danceability} (how much a track is
+danceable) and \textit{instrumentalness} (how much we are convinced a track is
+instrumental). At the end, we have:
+
+\begin{enumerate}
+  \item \textbf{Playlists}: Scrapped from users. 11617 playlists, only 6\% duplicated.
+  \begin{itemize}
+    \item Basic information about a playlist, like its ID, who is the owner, its name.
+  \end{itemize}
+
+  \item \textbf{Tracks}: Scrapped from playlists. 849397 tracks, 5\% duplicated, 4.6\% missing.
+  \begin{itemize}
+    \item Playlist features, like its ID, when the track was added to it, who added it;
+    \item Track features, like duration (ms), popularity and name;
+    \item Album features, like name and artists (name and ID);
+    \item Artists features, like their names and IDS.
+  \end{itemize}
+
+  \item \textbf{Audio features}: Scrapped from tracks. No duplicated or missing values.
+  \begin{itemize}
+    \item A lot of technical features from the audio, like \textit{danceability},
+    \textit{energy} and \textit{loudness}. Specially important for the models.
+  \end{itemize}
+
+  \item \textbf{Artists}: Scrapped from tracks. Only one artist duplicated.
+  \begin{itemize}
+    \item Very basic information, like the artist ID and its genres. The genres are
+    the most important, because tracks and playlists don't have genres, only the
+    artists.
+  \end{itemize}
+\end{enumerate}
+
+% https://tex.stackexchange.com/a/37583
+\begin{figure}%
+  \centering
+  \subfloat[Distribution of number of tracks among playlists. We can see that most of playlists have few tracks (100 or less), which is reasonable. We also found some outliers, like a playlist that has more than 13000 songs!]{{\includegraphics[width=0.3\textwidth]{../../images/sp_number_of_tracks.png} }}%
+  \qquad
+  \subfloat[Distribution of the duration of a track (in ms). We see that the mode is around 3min20s.]{{\includegraphics[width=0.3\textwidth]{../../images/sp_duration.png} }}%
+  \qquad
+  \subfloat[Tracks have artists, and artists have genres. This is the result of our analysis of the genres of the tracks. We see what we would expect: pop, rock, rap and hip hop in the list. The percentages seem small, but there are many genres to consider (in our sample, 2297 genres). This analysis was generated on a sample of the data.]{{\includegraphics[width=0.3\textwidth]{../../images/sp_genres.png} }}%
+  \caption{Visualizations of the data.}%
+  \label{fig:example}%
+\end{figure}
 
 \subsection{Last.fm Database}
 
