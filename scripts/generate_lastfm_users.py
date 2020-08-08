@@ -16,21 +16,21 @@ def main(argv):
     try:
         opts, _ = getopt.getopt(argv,"hk:s:u:n:l:p:",["api_key=","api_secret=", "user=", "level=", "limit=", "path="])
     except getopt.GetoptError:
-        print('Generate a csv of usernames from last.fm')
-        print('----------------------------------------')
-        print('api_key: get from last api')
-        print('api_secret: get from the last api')
-        print('user_to_start: username of last to start. Insert how many -u you want')
-        print('level: how many levels to walk on the network')
-        print('limit: the limit of friends to get from a user.')
-        print('path: folder to insert the file. If it does not exist, same as it is.')
-        print('''generate_lastfm_users.py -k <api_key> -s <api_secret>
-               -u <user_to_start> -n <level> -l <limit> -p <path: optional>''')
+            print('''generate_lastfm_users.py -k <api_key> -s <api_secret>
+                   -u <user_to_start> -n <level> -l <limit> -p <path: optional>''')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
             print('''generate_lastfm_users.py -k <api_key> -s <api_secret>        
                   -u <user_to_start> -n <level> -l <limit> -p <path: optional>''')
+            print('Generate a csv of usernames from last.fm')
+            print('----------------------------------------')
+            print('api_key: get from last api')
+            print('api_secret: get from the last api')
+            print('user_to_start: username of last to start. Insert how many -u you want')
+            print('level: how many levels to walk on the network')
+            print('limit: the limit of friends to get from a user.')
+            print('path: folder to insert the file. If it does not exist, same as it is.')
             sys.exit()
         elif opt in ("-k", "--api_key"):
             api_key = arg
