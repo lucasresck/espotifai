@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import os
+import os, sys
 import json
 
 import pylast 
@@ -11,9 +11,12 @@ import pandas as pd
 import time
 
 class User:
-
+    '''
+    Class with objective is to get information from an user. We must have a
+    network and a path to insert the users info. 
+    '''
     def __init__(self, network, filepath: str):
-
+        
         self.network = network
         if not os.path.exists(filepath): 
             try: 
@@ -22,10 +25,12 @@ class User:
             except: 
                 raise Exception('Filename not found. Please, insert all path.')
         self.users_file = filepath
+        self.k = 500 
 
     def write_users_names(self, user_list: list, level: int = 5, limit: int = 20):
         '''From a list of usernames, write a netwotk list of users in file.
            The file should be a csv. '''
+        print('INFO - The network algorithm started')
         with open(self.users_file, 'r') as f:
             line = f.readline()
             while line != '':                               # Get the last user id written
@@ -39,6 +44,7 @@ class User:
         self._write_in_file(ids_users)
         self.last_user_id += len(user_list)
         for user_name in user_list:
+            print('INFO - The user {} started'.format(user_name))
             user = self.network.get_user(username = user_name)
             self._build_network(user, level, limit)
 
@@ -59,11 +65,13 @@ class User:
         self.last_user_id += len(friends)
         if level > 1:
             for friend in friends: 
+                if self.last_user_id > self.k: 
+                    self.k += 500 
+                    sys.stdout.write('INFO - Last User is {} \r'.format(self.last_user_id))
+                    sys.stdout.flush()
                 self._build_network(self.network.get_user(friend), level - 1, limit)
         else:
             return
-        if self.last_user_id % 1000 == 0: 
-            print('Last User is {}'.format(self.last_user_id))
 
     def _write_in_file(self, lst: list):
         '''Write a list in a filepath. Auxliary funcion'''
@@ -144,6 +152,10 @@ class User:
         return user_info
 
 class Track:
+    '''
+    Class with objective is to get information from a track. We must have a
+    network. The path is stardart, so, you should not include it. 
+    '''
 
     def __init__(self, network, filepath: str = '../data/lastfm-api/tracks.csv'):
 
@@ -241,6 +253,10 @@ class Track:
         return track_info
 
 class Artist:
+    '''
+    Class with objective is to get information from an artist. We must have a
+    network. The path is stardart, so, you should not include it. 
+    '''
 
     def __init__(self, network, filepath: str = '../data/lastfm-api/artists.csv'):
 
@@ -321,6 +337,10 @@ class Artist:
         return artist_info
 
 class Album:
+    '''
+    Class with objective is to get information from an album. We must have a
+    network. The path is stardart, so, you should not include it. 
+    '''
 
     def __init__(self, network, filepath: str = '../data/lastfm-api/albums.csv'):
 
@@ -385,6 +405,10 @@ class Album:
         return album_info
 
 class Tag:
+    '''
+    Class with objective is to get information from a tag. We must have a
+    network. The path is stardart, so, you should not include it. 
+    '''
 
     def __init__(self, network, filepath: str = '../data/lastfm-api/tags.csv'):
 
@@ -467,6 +491,10 @@ class Tag:
         return tag_info
 
 class Library: 
+    '''
+    Class with objective is to get information from a library. We must have a
+    network.
+    '''
 
     def __init__(self, network):
         
