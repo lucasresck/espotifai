@@ -16,3 +16,8 @@
 # Local
 
 /data/*
+
+
+# MkDocs
+
+/report/site/*
