@@ -1,2 +1,29 @@
 site_name: Espotifai
+
+nav:
+    - PCA of audio features: index.md
+
 repo_url: https://github.com/lucasresck/espotifai
+        
+theme:
+  name: material
+  palette:
+    primary: default
+  icon:
+    repo: fontawesome/brands/github
+  
+#plugins:
+#  - mkdocs-jupyter
+
+extra_javascript:
+    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+markdown_extensions:
+    - mdx_math:
+        enable_dollar_delimiter: True
+    - pymdownx.highlight:
+        use_pygments: true
+        linenums: false
+    - pymdownx.inlinehilite
+    - pymdownx.superfences
+    - pymdownx.snippets
