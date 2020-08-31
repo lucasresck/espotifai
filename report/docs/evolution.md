@@ -28,4 +28,4 @@ We implemented the models, we chose the hyperparamers and we evaluated them. Alt
 
 ## Documentation
 
-Documenting our work was also part of the project. We created an [GitHub repository](https://github.com/lucasresck/espotifai) to store and version our code, and we documented it. The notebooks are also detailed and explain the models. Finally, we built this website in order to expose our work, using [MkDocs](https://www.mkdocs.org/) site generator, and we produced a screencast.
+Documenting our work was also part of the project. We created an [GitHub repository](https://github.com/lucasresck/espotifai) to store and version our code, and we documented it. The notebooks are also detailed and explain the models. Finally, we built this website in order to expose our work, using [MkDocs](https://www.mkdocs.org/) site generator, and we produced a [screencast](https://youtu.be/w9jelBD4zy8).
