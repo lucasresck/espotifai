@@ -10,7 +10,7 @@ There's no homogeneity in research community about playlist data. We saw that ea
 
 ## Solution: dataset creation
 
-Last.fm is a social network about music. Using the package Pylast, we gathered data from Last.fm users, in a network process fashion: starting with a few users, we walked through their followers recursively. At the end, we had public information about many users and many songs.
+Last.fm is a social network about music. Using the package Pylast, we gathered data from Last.fm users, in a network process fashion: starting with a few users, we walked through their followers recursively. At the end, we had public information about many users, tracks and artists.
 
 Spotify is a music streaming service. Using the package Spotipy and the Spotify Web API we scrapped playlist data from many users. Because Spotify doesn't allow us to request user followers, we couldn't gather the data as with Pylast. So we tested the Last.fm users and we colleted their public playlists if available. At the end, he had many Spotify public playlists, as well as information about the tracks, such as the audio features, and about the artists too.
 
