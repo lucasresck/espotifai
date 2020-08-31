@@ -20,7 +20,7 @@ All notebooks are very well documented and the models are explained in them.
 In a network propagation fashion, users are gathered from Last.fm. To do this, run:
 
 ```python
-python generate_users.py
+python generate_lastfm_users.py
 ```
 
 ### Data scraping
