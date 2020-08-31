@@ -538,7 +538,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/lucasresck/espotifai/edit/master/docs/eda/eda.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/lucasresck/espotifai/edit/master/report/docs/eda/eda.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -547,7 +547,8 @@
                 
                 
                 <h1 id="exploratory-data-analysis">Exploratory Data Analysis</h1>
-<p>We created two datasets: the Spotify's and the Last.fm's.</p>
+<p>We created two datasets: the one from Spotify and the one from Last.fm. The notebooks for dataset creation can be found <a href="https://github.com/lucasresck/espotifai/tree/master/notebooks/data_scraping">in their folder</a> in our GitHub repository.</p>
+<p>The complete Spotify EDA can be viewed <a href="https://github.com/lucasresck/espotifai/blob/master/notebooks/eda/spotify_analysis.ipynb">here</a>, and the complete Last.fm EDA <a href="https://github.com/lucasresck/espotifai/blob/master/notebooks/eda/lastfm_data_analysis.ipynb">here</a>. In the following, we briefly describe the EDA process.</p>
 <h2 id="spotify-dataset-analysis">Spotify dataset analysis</h2>
 <p>Spotify has a web API, and this API has a translation to Python called Spotipy. It allows us to search for tracks, playlists and artists data. Among all the information available, there exists what is called <em>audio features</em>, that is, musical metrics like <code>danceability</code>, <code>loudness</code> and <code>instrumentalness</code>, which could be important for recommendation systems.</p>
 <p>Data was captured using the API. The approach was:

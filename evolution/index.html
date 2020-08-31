@@ -220,9 +220,66 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Project evolution
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="./" title="Project evolution" class="md-nav__link md-nav__link--active">
       Project evolution
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-dataset-problem" class="md-nav__link">
+    The dataset problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution-dataset-creation" class="md-nav__link">
+    Solution: dataset creation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploratory-data-analysis" class="md-nav__link">
+    Exploratory data analysis
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-models" class="md-nav__link">
+    The models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -292,6 +349,49 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-dataset-problem" class="md-nav__link">
+    The dataset problem
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solution-dataset-creation" class="md-nav__link">
+    Solution: dataset creation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploratory-data-analysis" class="md-nav__link">
+    Exploratory data analysis
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-models" class="md-nav__link">
+    The models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -302,7 +402,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/lucasresck/espotifai/edit/master/docs/evolution.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/lucasresck/espotifai/edit/master/report/docs/evolution.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -311,7 +411,21 @@
                 
                 
                 <h1 id="project-evolution">Project evolution</h1>
-<p>TO DO</p>
+<p>Equally important to the final results is the process we passed through. It was as follows.</p>
+<h2 id="the-dataset-problem">The dataset problem</h2>
+<p>The most recommended dataset to be used was the Million Playlist Dataset, created by Spotify for the <a href="http://www.recsyschallenge.com/2018/">ACM RecSys Challenge 2018</a>. However, it wasn't available for us to use it.</p>
+<p>There's no homogeneity in research community about playlist data. We saw that each researcher creates its own dataset. It was difficult to find playlist datasets on internet, and what we found showed us not to be very useful.</p>
+<h2 id="solution-dataset-creation">Solution: dataset creation</h2>
+<p>Last.fm is a social network about music. Using the package Pylast, we gathered data from Last.fm users, in a network process fashion: starting with a few users, we walked through their followers recursively. At the end, we had public information about many users, tracks and artists.</p>
+<p>Spotify is a music streaming service. Using the package Spotipy and the Spotify Web API we scrapped playlist data from many users. Because Spotify doesn't allow us to request user followers, we couldn't gather the data as with Pylast. So we tested the Last.fm users and we colleted their public playlists if available. At the end, he had many Spotify public playlists, as well as information about the tracks, such as the audio features, and about the artists too.</p>
+<h2 id="exploratory-data-analysis">Exploratory data analysis</h2>
+<p>The analysis of the data was an expected step in our project. We did a classic EDA (missing values, distributions etc.) and we also created some interesting visualizations, trying to answer questions like 'what's the genre with most tracks?'.</p>
+<h2 id="the-models">The models</h2>
+<p>Music recommendation models are not so widespread as other data science models, so we had to search for these algorithms.</p>
+<p>We tested some models, but we found computational problems. In order to solve this, we addapted them and also searched for more efficient algorithms. The two models presented are our approach to solve these problems.</p>
+<p>We implemented the models, we chose the hyperparamers and we evaluated them. Although both models aren't much advanced, the results we found was good, comparing to top models from <a href="http://www.recsyschallenge.com/2018/">ACM RecSys Challenge 2018</a>.</p>
+<h2 id="documentation">Documentation</h2>
+<p>Documenting our work was also part of the project. We created an <a href="https://github.com/lucasresck/espotifai">GitHub repository</a> to store and version our code, and we documented it. The notebooks are also detailed and explain the models. Finally, we built this website in order to expose our work, using <a href="https://www.mkdocs.org/">MkDocs</a> site generator, and we produced a screencast.</p>
                 
               
               
