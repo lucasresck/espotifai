@@ -1,6 +1,8 @@
 # Exploratory Data Analysis
 
-We created two datasets: the Spotify's and the Last.fm's.
+We created two datasets: the one from Spotify and the one from Last.fm. The notebooks for dataset creation can be found [in their folder](https://github.com/lucasresck/espotifai/tree/master/notebooks/data_scraping) in our GitHub repository.
+
+The complete Spotify EDA can be viewed [here](https://github.com/lucasresck/espotifai/blob/master/notebooks/eda/spotify_analysis.ipynb), and the complete Last.fm EDA [here](https://github.com/lucasresck/espotifai/blob/master/notebooks/eda/lastfm_data_analysis.ipynb). In the following, we briefly describe the EDA process.
 
 ## Spotify dataset analysis
 

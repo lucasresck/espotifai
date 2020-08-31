@@ -1,4 +1,4 @@
-# Model of Track's Similarity Matrix
+# [Model of Track's Similarity Matrix](https://github.com/lucasresck/espotifai/blob/master/notebooks/track_similarity_model/similarity_matrix.ipynb)
 
 ## Based on the article [Steffen Pauws and Berry Eggen](http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf)
 
