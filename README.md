@@ -12,7 +12,7 @@ Professor: [Dr. Jorge Poco](https://github.com/jpocom).
 
 This repository contains our approach to the **playlist continuation** problem. We scraped data from Spotify and Last.fm and we made an exploratory data analysis. We also implemented models of playlist continuation and we saw good results. We develop a [website](https://lucasresck.github.io/espotifai/) to expose our work.
 
-## Repository brief structure
+## Summary repository structure
 
 ```
 ├─ documents -------------------- Deliverables of our project
