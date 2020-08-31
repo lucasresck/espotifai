@@ -1,0 +1,1027 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://lucasresck.github.io/espotifai/model_1/model/">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.11">
+    
+    
+      
+        <title>Model based on track similarity - Espotifai</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.860688db.min.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.943997b5.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#000000">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#model-of-tracks-similarity-matrix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://lucasresck.github.io/espotifai/" title="Espotifai" class="md-header-nav__button md-logo" aria-label="Espotifai">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Espotifai
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Model based on track similarity
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/lucasresck/espotifai/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://lucasresck.github.io/espotifai/" title="Espotifai" class="md-nav__button md-logo" aria-label="Espotifai">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Espotifai
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/lucasresck/espotifai/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../related_work/" title="Related work" class="md-nav__link">
+      Related work
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../evolution/" title="Project evolution" class="md-nav__link">
+      Project evolution
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../eda/" title="EDA" class="md-nav__link">
+      EDA
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Model based on track similarity
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="Model based on track similarity" class="md-nav__link md-nav__link--active">
+      Model based on track similarity
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#based-on-the-article-steffen-pauws-and-berry-eggen" class="md-nav__link">
+    Based on the article Steffen Pauws and Berry Eggen
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-important-features" class="md-nav__link">
+    Defining Important Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#playlist-and-tracks-dataframes" class="md-nav__link">
+    Playlist and Tracks dataframes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#treating-the-data" class="md-nav__link">
+    Treating the data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-the-metric" class="md-nav__link">
+    Defining the metric
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-example" class="md-nav__link">
+    Simple example
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendation-based-on-similarity" class="md-nav__link">
+    Recommendation based on similarity.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation" class="md-nav__link">
+    Evaluation
+  </a>
+  
+    <nav class="md-nav" aria-label="Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#r-precision-metric" class="md-nav__link">
+    R-precision metric
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-results" class="md-nav__link">
+    Testing the Results
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing the Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lets-train-the-model" class="md-nav__link">
+    Let's train the model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lets-see-in-the-testing-ad-training-set" class="md-nav__link">
+    Let's see in the testing ad training set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-the-rate-of-known-songs" class="md-nav__link">
+    Change the rate of known songs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../model_2/model/" title="Model based on playlist similarity" class="md-nav__link">
+      Model based on playlist similarity
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../conclusion/" title="Conclusion" class="md-nav__link">
+      Conclusion
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#based-on-the-article-steffen-pauws-and-berry-eggen" class="md-nav__link">
+    Based on the article Steffen Pauws and Berry Eggen
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-important-features" class="md-nav__link">
+    Defining Important Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#playlist-and-tracks-dataframes" class="md-nav__link">
+    Playlist and Tracks dataframes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#treating-the-data" class="md-nav__link">
+    Treating the data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-the-metric" class="md-nav__link">
+    Defining the metric
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-example" class="md-nav__link">
+    Simple example
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendation-based-on-similarity" class="md-nav__link">
+    Recommendation based on similarity.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation" class="md-nav__link">
+    Evaluation
+  </a>
+  
+    <nav class="md-nav" aria-label="Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#r-precision-metric" class="md-nav__link">
+    R-precision metric
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-results" class="md-nav__link">
+    Testing the Results
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing the Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lets-train-the-model" class="md-nav__link">
+    Let's train the model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lets-see-in-the-testing-ad-training-set" class="md-nav__link">
+    Let's see in the testing ad training set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#change-the-rate-of-known-songs" class="md-nav__link">
+    Change the rate of known songs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/lucasresck/espotifai/edit/master/docs/model_1/model.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                <h1 id="model-of-tracks-similarity-matrix">Model of Track's Similarity Matrix</h1>
+<h2 id="based-on-the-article-steffen-pauws-and-berry-eggen">Based on the article <a href="http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf">Steffen Pauws and Berry Eggen</a></h2>
+<p>The main idea is to establish a metric and build a similarity matrix indicating the probabilitity thet two songs are the same. This will be done using the track's features, track's metadata and the playlists built by the users on Spotify.  </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Importing libraries </span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span><span class="p">,</span> <span class="n">squareform</span><span class="p">,</span> <span class="n">pdist</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">lil_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">seaborn</span> <span class="kn">import</span> <span class="n">heatmap</span> 
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+</code></pre></div>
+
+<h2 id="defining-important-features">Defining Important Features</h2>
+<p>This features will be used to understand the data. We separate the metadata and audio features needed in the process. These features are obtained from Spotify API</p>
+<div class="highlight"><pre><span></span><code><span class="n">metadata</span> <span class="o">=</span>  <span class="p">[</span><span class="s1">&#39;playlist_id&#39;</span><span class="p">,</span> <span class="s1">&#39;explicit&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;popularity&#39;</span><span class="p">,</span> <span class="s1">&#39;album_id&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;album_release_date&#39;</span><span class="p">,</span> <span class="s1">&#39;artists_ids&#39;</span><span class="p">]</span>
+<span class="n">audio_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;danceability&#39;</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="s1">&#39;loudness&#39;</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;speechiness&#39;</span><span class="p">,</span> <span class="s1">&#39;acousticness&#39;</span><span class="p">,</span> <span class="s1">&#39;instrumentalness&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;duration_ms&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<h2 id="playlist-and-tracks-dataframes">Playlist and Tracks dataframes</h2>
+<p>Here we get the playlists, the audio features and the tracks. I separate playlists with more the 5 tracks and less than 500, due to computational problems and considering that people do not make playlists of this size. </p>
+<p>I will only consider a random part of the dataset, due to computational costs. </p>
+<div class="highlight"><pre><span></span><code><span class="n">sample</span> <span class="o">=</span> <span class="mi">1500</span>   <span class="c1"># It must be &lt; 10000</span>
+<span class="n">playlists_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;../../data/sp_playlists.pkl&#39;</span><span class="p">)[[</span><span class="s1">&#39;owner_id&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;tracks&#39;</span><span class="p">]]</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>  <span class="c1">#Reproducibility</span>
+<span class="n">chosen_users</span> <span class="o">=</span> <span class="n">seed</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">playlists_df</span><span class="o">.</span><span class="n">owner_id</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">size</span> <span class="o">=</span> <span class="n">sample</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">playlists_df</span> <span class="o">=</span> <span class="n">playlists_df</span><span class="p">[</span><span class="n">playlists_df</span><span class="o">.</span><span class="n">owner_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">chosen_users</span><span class="p">)]</span>
+<span class="n">playlists_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;playlist_id&#39;</span><span class="p">,</span> <span class="s1">&#39;tracks&#39;</span><span class="p">:</span> <span class="s1">&#39;n_tracks&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">playlists_df</span><span class="o">.</span><span class="n">n_tracks</span> <span class="o">=</span> <span class="n">playlists_df</span><span class="o">.</span><span class="n">n_tracks</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>
+
+<span class="c1"># Getting Playlists with at least 5 tracks and maximum of 500 tracks</span>
+<span class="n">playlists_df</span> <span class="o">=</span> <span class="n">playlists_df</span><span class="p">[(</span><span class="n">playlists_df</span><span class="o">.</span><span class="n">n_tracks</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">playlists_df</span><span class="o">.</span><span class="n">n_tracks</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">)]</span>
+
+<span class="k">del</span> <span class="n">playlists_df</span><span class="p">[</span><span class="s1">&#39;n_tracks&#39;</span><span class="p">]</span>
+<span class="k">del</span> <span class="n">playlists_df</span><span class="p">[</span><span class="s1">&#39;owner_id&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">audio_features_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;../../data/sp_audio_features.pkl&#39;</span><span class="p">)[</span><span class="n">audio_features</span><span class="p">]</span>
+
+<span class="n">tracks_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;../../data/sp_tracks_ready_*.pkl&#39;</span><span class="p">)):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="n">metadata</span><span class="p">]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">playlist_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">playlists_df</span><span class="o">.</span><span class="n">playlist_id</span><span class="p">)]</span>
+    <span class="n">tracks_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tracks_df</span><span class="p">,</span> <span class="n">a</span><span class="p">],</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">tracks_df</span> <span class="o">=</span> <span class="n">tracks_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">audio_features_df</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+
+<span class="k">del</span> <span class="n">audio_features_df</span>
+<span class="k">del</span> <span class="n">a</span>
+</code></pre></div>
+
+<p>I will disconsider duplicated songs in the same playlist. I know it may happen, but the algorithm calculates similarity between tracks, and I know it's one. </p>
+<div class="highlight"><pre><span></span><code><span class="n">tracks_df</span> <span class="o">=</span> <span class="n">tracks_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;playlist_id&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+<h2 id="treating-the-data">Treating the data</h2>
+<p>I convert the dates to datetime and use the year as a continuum value. </p>
+<div class="highlight"><pre><span></span><code><span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;album_release_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span> <span class="o">=</span> <span class="s1">&#39;0000&#39;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;album_release_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;album_release_date&#39;</span><span class="p">],</span> <span class="n">errors</span> <span class="o">=</span> <span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+<span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;album_release_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;album_release_date&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;album_release_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;days&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;album_release_date&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>We have some few nan values in the <code>column days</code>. I will put the mean of the values, because it's few missing data. It will depend on the initial sample. </p>
+<div class="highlight"><pre><span></span><code><span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;days&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">tracks_df</span><span class="p">[</span><span class="s1">&#39;days&#39;</span><span class="p">]),</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Convert the artists to set, in order to the metric presented below. It helps the analysis. </p>
+<div class="highlight"><pre><span></span><code><span class="n">tracks_df</span><span class="o">.</span><span class="n">artists_ids</span> <span class="o">=</span> <span class="n">tracks_df</span><span class="o">.</span><span class="n">artists_ids</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+</code></pre></div>
+
+<p>I separate the categorical, numerical and set oriented features, to make the ideia of the similarity matrix. This ideia is withdrawn from article already cited.  </p>
+<div class="highlight"><pre><span></span><code><span class="n">features_categorical</span> <span class="o">=</span>  <span class="p">[</span><span class="s1">&#39;explicit&#39;</span><span class="p">,</span> <span class="s1">&#39;album_id&#39;</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;time_signature&#39;</span><span class="p">]</span>
+<span class="n">features_numerical</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;popularity&#39;</span><span class="p">,</span> <span class="s1">&#39;duration_ms&#39;</span><span class="p">,</span> <span class="s1">&#39;danceability&#39;</span><span class="p">,</span> <span class="s1">&#39;energy&#39;</span><span class="p">,</span> <span class="s1">&#39;loudness&#39;</span><span class="p">,</span> <span class="s1">&#39;speechiness&#39;</span><span class="p">,</span> 
+                      <span class="s1">&#39;acousticness&#39;</span><span class="p">,</span> <span class="s1">&#39;instrumentalness&#39;</span><span class="p">,</span> <span class="s1">&#39;liveness&#39;</span><span class="p">,</span> <span class="s1">&#39;valence&#39;</span><span class="p">,</span> <span class="s1">&#39;tempo&#39;</span><span class="p">,</span> <span class="s1">&#39;days&#39;</span><span class="p">]</span>
+<span class="n">features_set_oriented</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;artists_ids&#39;</span><span class="p">]</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="p">[]</span> 
+<span class="n">features</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">features_categorical</span><span class="p">)</span>
+<span class="n">features</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">features_numerical</span><span class="p">)</span>
+<span class="n">features</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">features_set_oriented</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Only to ensure correct type of numerical features. </p>
+<div class="highlight"><pre><span></span><code><span class="n">tracks_df</span><span class="p">[</span><span class="n">features_numerical</span><span class="p">]</span> <span class="o">=</span> <span class="n">tracks_df</span><span class="p">[</span><span class="n">features_numerical</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="defining-the-metric">Defining the metric</h2>
+<p>Let's build the metrics proposed. For now, I normalize the numerical data, ensuring the range to be <script type="math/tex">[0,1]</script>. This ensures the metric works.</p>
+<p>Consider <script type="math/tex">w</script> a weight vector with size <script type="math/tex">K</script>, the number of features and <script type="math/tex">||w||_1 = 1</script>. Consider we have <script type="math/tex">r, s</script> and <script type="math/tex">t</script> features categorical, numerical and set_oriented, respectively, where <script type="math/tex">r + s + t = K</script>. Let <script type="math/tex">x</script> e <script type="math/tex">y</script> be two tracks. So:</p>
+<p>
+<script type="math/tex; mode=display">S = \sum_{i=1}^r w_i(\mathbb{1}\{x_i = y_i\}) + \sum_{j = 1}^s w_{r + j}(1 - ||x_j - y_j||_1) + \sum_{k=1}^t w_{r + s + k} \frac{|x_k \cap y_k|}{|x_k \cup y_k|}</script>
+</p>
+<div class="highlight"><pre><span></span><code><span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">tracks_df</span><span class="p">[</span><span class="n">features_numerical</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tracks_df</span><span class="p">[</span><span class="n">features_numerical</span><span class="p">])</span>
+</code></pre></div>
+
+<p>I will give grades of importance (1 - 5) based on my experience to each feature. This can be changed, however it will change how the model give importance for each feature in simmilarity calculation.</p>
+<div class="highlight"><pre><span></span><code><span class="n">metric_categorical</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">:</span>  <span class="n">x1</span> <span class="o">==</span> <span class="n">x2</span>
+<span class="n">metric_set_oriented</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x1</span> <span class="o">&amp;</span> <span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x1</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">x2</span><span class="p">)))</span>
+<span class="n">metric_numerical</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">metric_songs</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> 
+
+    <span class="n">similarity</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">similarity</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="n">metric_categorical</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]))</span>
+    <span class="n">similarity</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">17</span><span class="p">],</span> <span class="n">metric_numerical</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">17</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">17</span><span class="p">]))</span>
+    <span class="n">similarity</span> <span class="o">+=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">17</span><span class="p">]</span><span class="o">*</span><span class="n">metric_set_oriented</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">17</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">similarity</span>
+</code></pre></div>
+
+<h2 id="simple-example">Simple example</h2>
+<p>Let's calculate a simple case with 500 songs.</p>
+<div class="highlight"><pre><span></span><code><span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tracks_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)[</span><span class="n">features</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">500</span><span class="p">))</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="n">metric_songs</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">heatmap</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">light_palette</span><span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Similarity Matrix&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_26_0.png" /></p>
+<h2 id="recommendation-based-on-similarity">Recommendation based on similarity.</h2>
+<p>We will use the metric described above. The similarity between two songs will be interpreted as a <strong>probability</strong>. We could build the role track similarity but it requires much computation. So we will do a simple modification. We will calculate the metric between two songs if they are in the same playlist, for some playlist in the dataset. We expect it reduces the number of calculations! </p>
+<p>After we will have a sparser matrix and in order too add tracks to a playlist, we get <script type="math/tex">n</script> tracks that maximize the mean probability on the similarity matrix, but considering only the tracks on the playlist given.  </p>
+<p>If two tracks appear in the same playlists more times, we use a correction factor. We do as below, if <script type="math/tex">x</script> is the similarity between two tracks, I want <script type="math/tex">f</script> factor that: </p>
+<p>
+<script type="math/tex; mode=display">x \leq fx < 1 \implies 1 \leq f < \frac{1}{x}</script>
+</p>
+<p>I take <script type="math/tex">f</script> as a convex combination of the values. So: </p>
+<p>
+<script type="math/tex; mode=display">f = \alpha + \frac{1 - \alpha}{x} \implies fx = \alpha x + (1 - \alpha),</script>
+</p>
+<p>where <script type="math/tex">\alpha \in (0,1]</script>. If <script type="math/tex">\alpha = 1</script>, we do not have this correction. </p>
+<h2 id="evaluation">Evaluation</h2>
+<h3 id="r-precision-metric">R-precision metric</h3>
+<p>As described in their work, <a href="https://dl.acm.org/doi/10.1145/3240323.3240342">Chen et al.</a> suggests a metric for playlist continuation evaluation. They call it <strong>R-precision</strong>. It measures how many of the real tracks (and their artists) the model suggested correctly.</p>
+<p>A playlist as input to the model has two parts: its part on display to the model and it's hidden part. The hidden part is what the model try to predict and is called <em>ground truth</em>.</p>
+<p>
+<script type="math/tex; mode=display">\textrm{R-precision} = \dfrac{|S_T \cap G_T| + 0.25 \cdot |S_A \cap G_A|}{|G_T|}</script>
+</p>
+<p>
+<script type="math/tex">G_T</script> is the set of unique track IDs from ground truth, that is, the unique hidden tracks. <script type="math/tex">S_T</script> is the suggested tracks from our model. <script type="math/tex">G_A</script> is the set of unique artists IDs from ground truth and <script type="math/tex">S_A</script> is the set of predicted artists. The metric can be interpreted as accuracy (although it can be greater than 1), but giving some score for wrong tracks with right artists.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Class of the model</span>
+
+<span class="k">class</span> <span class="nc">SimilarityModel</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracks</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">playlists</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span> 
+        <span class="sd">&#39;&#39;&#39;Implementation of the Simmilarity Model described above. </span>
+<span class="sd">           The metric used are describe in PATS article. </span>
+<span class="sd">           - tracks: all the tracks in your world. </span>
+<span class="sd">           - playlists: the training playlists.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracks</span> <span class="o">=</span> <span class="n">tracks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">playlists</span> <span class="o">=</span> <span class="n">playlists</span>
+        <span class="c1"># We will consider a dataframe with the unique tracks and create numerical indexes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracks_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracks</span><span class="p">[[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">playlists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">playlists</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;playlist_id&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_similar_track</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracks_similarity</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_of_songs</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span> 
+        <span class="sd">&#39;&#39;&#39;We get the mean in the tracks similarity and get tracks that </span>
+<span class="sd">           maximize the probability mean.</span>
+<span class="sd">           - tracks_similarity: matrix with similarities.</span>
+<span class="sd">           - n_of_song: the number of songs wanted to be predicted. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">interest_tracks</span> <span class="o">=</span> <span class="n">tracks_similarity</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">songs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">interest_tracks</span><span class="p">,</span> <span class="o">-</span><span class="n">n_of_songs</span><span class="p">)[</span><span class="o">-</span><span class="n">n_of_songs</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">songs</span>
+
+    <span class="k">def</span> <span class="nf">_get_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracks_ids</span><span class="p">):</span>
+        <span class="n">indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracks_index</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tracks_index</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">tracks_ids</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_track_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">track_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracks_index</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">track_id</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="k">def</span> <span class="nf">accuracy_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicted</span><span class="p">,</span> <span class="n">true</span><span class="p">):</span>
+
+        <span class="n">G_a</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> 
+        <span class="k">for</span> <span class="n">artist_id</span> <span class="ow">in</span> <span class="n">predicted</span><span class="o">.</span><span class="n">artists_ids</span><span class="p">:</span>
+            <span class="n">G_a</span> <span class="o">=</span> <span class="n">G_a</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">artist_id</span><span class="p">)</span>
+
+        <span class="n">S_a</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">artist_id</span> <span class="ow">in</span> <span class="n">true</span><span class="o">.</span><span class="n">artists_ids</span><span class="p">:</span>
+            <span class="n">S_a</span> <span class="o">=</span> <span class="n">S_a</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">artist_id</span><span class="p">)</span>
+
+        <span class="n">G_t</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">true</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">S_t</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">predicted</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">S_t</span> <span class="o">&amp;</span> <span class="n">G_t</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.25</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">S_a</span> <span class="o">&amp;</span> <span class="n">G_a</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">G_t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">acc</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span> 
+        <span class="sd">&#39;&#39;&#39;This functions build the model with the tracks and playlists disposed. </span>
+<span class="sd">           (1 - alpha) increases the similarity of two tracks if they appear in more playlists.</span>
+<span class="sd">           It should be between (0, 1].            </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">assert</span> <span class="n">alpha</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+
+        <span class="n">tracks_similarity</span> <span class="o">=</span> <span class="n">lil_matrix</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tracks_index</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tracks_index</span><span class="p">)),</span> 
+                                       <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">playlist_id</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">playlists</span><span class="o">.</span><span class="n">index</span><span class="p">):</span> 
+
+            <span class="n">tracks_playlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tracks</span><span class="o">.</span><span class="n">playlist_id</span> <span class="o">==</span> <span class="n">playlist_id</span><span class="p">]</span>
+            <span class="n">indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index</span><span class="p">(</span><span class="n">tracks_playlist</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">squareform</span><span class="p">(</span><span class="n">pdist</span><span class="p">(</span><span class="n">tracks_playlist</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="n">metric_songs</span><span class="p">))</span>
+
+            <span class="c1"># M will be a mask. I will multiply it to (fx - x)</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">heaviside</span><span class="p">(</span><span class="n">tracks_similarity</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">indexes</span><span class="p">,</span> <span class="n">indexes</span><span class="p">)]</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">*</span><span class="p">((</span><span class="n">alpha</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">tracks_similarity</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">indexes</span><span class="p">,</span> <span class="n">indexes</span><span class="p">)]</span><span class="o">.</span><span class="n">A</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">))</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">M</span> <span class="o">+</span> <span class="n">dist</span>
+
+            <span class="n">tracks_similarity</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">indexes</span><span class="p">,</span> <span class="n">indexes</span><span class="p">)]</span> <span class="o">=</span> <span class="n">M</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracks_similarity</span> <span class="o">=</span> <span class="n">tracks_similarity</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">given_tracks</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">n_of_songs</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Given a playlist, this function complete it with n_of_songs songs&#39;&#39;&#39;</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">given_tracks</span><span class="p">)</span>
+
+        <span class="n">indexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_index</span><span class="p">(</span><span class="n">given_tracks</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">similarity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracks_similarity</span><span class="p">[</span><span class="n">indexes</span><span class="p">]</span>
+        <span class="n">tracks_chosen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_similar_track</span><span class="p">(</span><span class="n">similarity</span><span class="p">,</span> <span class="n">n_of_songs</span><span class="p">)</span>
+
+        <span class="n">tracks_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_track_number</span><span class="p">(</span><span class="n">tracks_chosen</span><span class="p">)</span>
+        <span class="n">predicted_tracks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tracks</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">tracks_id</span><span class="p">)]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>             
+
+        <span class="k">return</span> <span class="n">predicted_tracks</span>
+
+    <span class="k">def</span> <span class="nf">accuracy_evaluation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">playlists</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">bar_show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span> 
+
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">playlists</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">playlists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">playlists</span>
+        <span class="k">if</span> <span class="n">bar_show</span><span class="p">:</span> 
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">playlists</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">playlists</span><span class="o">.</span><span class="n">index</span>
+
+        <span class="k">for</span> <span class="n">playlist_id</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span> 
+
+            <span class="n">playlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tracks</span><span class="o">.</span><span class="n">playlist_id</span> <span class="o">==</span> <span class="n">playlist_id</span><span class="p">]</span>
+
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">playlist</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span> 
+                <span class="k">continue</span>
+            <span class="c1"># Already known tracks</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rate</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+                <span class="k">continue</span>
+
+            <span class="n">playlist_not_hidden</span> <span class="o">=</span> <span class="n">playlist</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">playlist_hidden</span> <span class="o">=</span> <span class="n">playlist</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">j</span><span class="p">:]</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">playlist_not_hidden</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
+
+            <span class="n">acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy_metric</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">playlist_hidden</span><span class="p">)</span>
+            <span class="n">accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="testing-the-results">Testing the Results</h2>
+<p>First, I will get <code>playlist_id</code> for train and test. I get also only the necessary features from the tracks. 
+I dropped the duplicates cause I'm not interested in playlists with repeated tracks, given that I already know two equal songs have similarity 1. </p>
+<div class="highlight"><pre><span></span><code><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">playlists_df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(),</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">412</span><span class="p">)</span>
+<span class="n">tracks_subset</span> <span class="o">=</span> <span class="n">tracks_df</span><span class="p">[</span><span class="n">features</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;playlist_id&#39;</span><span class="p">]]</span>
+</code></pre></div>
+
+<h3 id="lets-train-the-model">Let's train the model</h3>
+<p>I will validade the alpha value. It takes a long time to do all the job. Sorry, but you'll have to wait. That's the reason I do not use Cross Validation. It would be better, however. </p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fitting</span><span class="p">(</span><span class="n">alpha</span><span class="p">):</span> 
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;INFO - Starting with alpha: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">SimilarityModel</span><span class="p">(</span><span class="n">tracks_subset</span><span class="p">,</span> <span class="n">training</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">)</span>    
+
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">accuracy_evaluation</span><span class="p">(</span><span class="n">validate</span><span class="p">,</span> <span class="n">bar_show</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">evaluation</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
+
+    <span class="k">return</span> <span class="n">acc</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+<span class="n">training</span><span class="p">,</span> <span class="n">validate</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">validate</span> <span class="o">=</span> <span class="n">validate</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;playlist_id&#39;</span><span class="p">)</span>
+
+<span class="n">evaluation</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">alphas</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">:</span> 
+    <span class="n">_</span> <span class="o">=</span> <span class="n">fitting</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The chosen alpha was </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>The chosen alpha was (1.0, 0.055581996102373604)
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Evaluation on the Validation Set&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;R-precision&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_35_0.png" /></p>
+<p>So, if two tracks appear together in more thatn a playlist, we don't use this information. </p>
+<p>Fitting the model with this alpha</p>
+<div class="highlight"><pre><span></span><code><span class="n">alpha</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimilarityModel</span><span class="p">(</span><span class="n">tracks_subset</span><span class="p">,</span> <span class="n">train</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">)</span>        
+</code></pre></div>
+
+<h3 id="lets-see-in-the-testing-ad-training-set">Let's see in the testing ad training set</h3>
+<p>I only have to set test index to <code>playlist_id</code> because it is only done automatically in the training set. </p>
+<div class="highlight"><pre><span></span><code><span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;playlist_id&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="change-the-rate-of-known-songs">Change the rate of known songs</h3>
+<p>We were considering we already knew 70% tracks of the playlist. I vary this with some values to understang the results. </p>
+<div class="highlight"><pre><span></span><code><span class="n">rates</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+<span class="n">evaluation</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Rate&#39;</span><span class="p">:</span> <span class="n">rates</span><span class="p">,</span> 
+              <span class="s1">&#39;Train Set&#39;</span><span class="p">:</span> <span class="p">[],</span> 
+              <span class="s1">&#39;Test Set&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+<span class="k">for</span> <span class="n">rate</span> <span class="ow">in</span> <span class="n">rates</span><span class="p">:</span> 
+    <span class="n">train_acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">accuracy_evaluation</span><span class="p">(</span><span class="n">rate</span> <span class="o">=</span> <span class="n">rate</span><span class="p">)</span>
+    <span class="n">test_acc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">accuracy_evaluation</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span> <span class="n">rate</span><span class="p">,</span> <span class="n">bar_show</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">evaluation</span><span class="p">[</span><span class="s1">&#39;Train Set&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_acc</span><span class="p">)</span>
+    <span class="n">evaluation</span><span class="p">[</span><span class="s1">&#39;Test Set&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_acc</span><span class="p">)</span>
+
+<span class="n">evaluation</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">evaluation</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Rate&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Train Set&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluation</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;Rate&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Test Set&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluation</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;darkred&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Evaluation on the Test and Train Set&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Train Set&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Test Set&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;R-precision&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;R-precision&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;rate&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_43_0.png" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>With low rates, the algorithm performs better. Also, we have to notice that we do not use all the information due to computational cost, but it could improve the results! A well done prefilter could be good to the data, but none thought was good enough.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../eda/" title="EDA" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                EDA
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../../model_2/model/" title="Model based on playlist similarity" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Model based on playlist similarity
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.df0def68.min.js"></script>
+      <script src="../../assets/javascripts/bundle.ba57d267.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.5eca75d3.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
