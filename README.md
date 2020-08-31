@@ -1,35 +1,32 @@
 # espotifai
+> Automatic Playlist Recommender.
 
-An Automatic Playlist Recommender.
+We studied and implemented some k-NN algorithms to deal with the **playlist continuation** problem. Check out [our website](https://lucasresck.github.io/espotifai/) with the report of this work.
 
 This is our final project for [Foundations of Data Science](https://emap.fgv.br/disciplina/mestrado/fundamentos-de-ciencia-de-dados), a Mathematical Modelling Master's subject at Getulio Vargas Foundation (FGV).
 
-## Installation
+## Usage example
 
-`pip install pylast`
+You can scrap the data, make an EDA and analyse the models with the notebooks provided. All of them are very well documented and the models are explained.
 
-`pip install spotipy`
+### Data scraping
 
-## Create datasets
+To scrap data from Spotify and Last.fm, run the notebooks of the folder [`notebooks/data_scraping/`](https://github.com/lucasresck/espotifai/tree/master/notebooks/data_scraping).
 
-In order to create the datasets, you have to register yourself at [Spotify](https://developer.spotify.com/documentation/web-api/) and [Last.fm](https://www.last.fm/api/). After that, follow this:
+### Exploratory Data Analysis
 
-### Get users
+The template for an EDA of both datasets are inside the folder [`notebooks/eda/`](https://github.com/lucasresck/espotifai/tree/master/notebooks/eda). Fell free to edit and addapt it to your own needs.
 
-`python scripts/generate_lastfm_users.py -k <api_key> -s <api_secret> -u <user_to_start> -n <level> -l <limit> -p <path: optional>`
+### Analyse the models
 
-### Get Last.fm data
+Two models are implemented and documented inside [`notebooks/`](https://github.com/lucasresck/espotifai/tree/master/notebooks).
 
-Run `/notebooks/create_lastfm_datasets.ipynb`.
+Both of them are k-NN based models. The first is a model based on track similarity, and the second is based on playlist similarity. Each model has its notebook detailing the math behind it, as well as the code.
 
-### Get Spotify data
+## Development setup
 
-Run `/notebooks/create_spotify_datasets.ipynb`.
+We used the packages Spotipy and Pylast to scrap data from Spotify and Last.fm. Just install the requirements:
 
-### Create Last.fm analysis
-
-Run `/notebooks/lastfm_data_analysis.ipynb`.
-
-### Create Spotify analysis
-
-Run `/notebooks/spotify_analysis.ipynb`.
+```sh
+pip install -r requirements.txt
+```
