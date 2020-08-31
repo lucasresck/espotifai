@@ -1,8 +1,5 @@
 # Overview
 
-
-<div style="text-align: justify"> 
-
 ## What this is
 
 **Espotifai** is our approach to the **playlist continuation problem**. That is, given a playlist, how to continuate it?
@@ -23,5 +20,3 @@ Math is all about that!! And of course, we love music!
 Given an incomplete playlist, we should complete it. Also, we should deal with the problem of the leak of playlist data on the internet, so as with the computational problems that appear.
 
 This is our final project for [Foundations of Data Science](https://emap.fgv.br/disciplina/mestrado/fundamentos-de-ciencia-de-dados), a Mathematical Modelling Master's subject at Getulio Vargas Foundation (FGV).
-
-</div>

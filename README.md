@@ -13,15 +13,21 @@ You can scrap the data, make an EDA and analyse the models with the notebooks pr
 
 To scrap data from Spotify and Last.fm, run the notebooks of the folder [`notebooks/data_scraping/`](https://github.com/lucasresck/espotifai/tree/master/notebooks/data_scraping).
 
+![alt text](https://raw.githubusercontent.com/lucasresck/espotifai/master/images/popular_artists.png)
+
 ### Exploratory Data Analysis
 
 The template for an EDA of both datasets are inside the folder [`notebooks/eda/`](https://github.com/lucasresck/espotifai/tree/master/notebooks/eda). Fell free to edit and addapt it to your own needs.
+
+![alt text](https://raw.githubusercontent.com/lucasresck/espotifai/master/images/sp_genres.png)
 
 ### Analyse the models
 
 Two models are implemented and documented inside [`notebooks/`](https://github.com/lucasresck/espotifai/tree/master/notebooks).
 
 Both of them are k-NN based models. The first is a model based on track similarity, and the second is based on playlist similarity. Each model has its notebook detailing the math behind it, as well as the code.
+
+![alt text](https://raw.githubusercontent.com/lucasresck/espotifai/master/images/evaluation.png)
 
 ## Development setup
 
