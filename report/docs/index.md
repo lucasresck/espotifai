@@ -1,59 +1,19 @@
-# PCA of audio features
+# Overview
 
-Here we reduce dimensionality of audio features data in order to try to gather insights about playlists. We sample some playlists and reduce the dimensionality of the features of their songs.
+## What this is
 
+**Espotifai** is our approach to the **playlist continuation problem**. That is, given a playlist, how to continuate it?
 
-```python
-import glob
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
-from sklearn.decomposition import PCA
+We know that nowadays recommenders are extremely important, both for the greater production of content never seen before, and for the massive access provided by digital platforms. Music recommendation is no exception, so it is important to study and develop ways to match people and music they like or they will like.
 
-sns.set()
-```
+We studied and implemented two algorithms that try to solve the problem of playlist continuation, inspired by [Kelen et al.](https://dl.acm.org/doi/10.1145/3267471.3267477) and [Pauws and Eggen](http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf). Both of them use an idea of k-NN, but the former use a similarity among playlists and the latter use a similarity among tracks.
 
-We sample 5 playlists and gather their songs.
+## Motivation
 
+We both love music, and the music reccomendation systems intrigue us.
 
-```python
-playlists = pd.read_pickle('../data/sp_playlists.pkl')
-playlist_ids = playlists.sample(2).id.to_list()
-tracks = []
-for file in glob.glob('../data/sp_tracks_ready_*.pkl'):
-    df = pd.read_pickle(file)
-    tracks.append(df[df.playlist_id.apply(lambda x: x in playlist_ids)][['playlist_id', 'id']])  
-tracks = pd.concat(tracks, ignore_index=True)
-tracks.dropna(inplace=True)
-```
+## Our goals
 
-Now we read the features of the songs in order to extract those from the songs we want. We merge the datasets.
+Given an incomplete playlist, we should complete it. Also, we should deal with the problem of the leak of playlist data on the internet, so as with the computational problems that appear.
 
-
-```python
-audio_features = pd.read_pickle('../data/sp_audio_features.pkl')
-dataset = tracks.merge(audio_features, on='id').drop(columns=['id', 'mode', 'time_signature'])
-```
-
-We normalize data (between 0 and 1) and apply PCA transformation.
-
-
-```python
-for column in dataset.drop(columns='playlist_id').columns:
-    series = dataset[column]
-    a = series.min()
-    b = series.max()
-    dataset.loc[:, column] = dataset[column].apply(lambda x: (x-a)/(b-a))
-
-pca = PCA(n_components=2).fit_transform(dataset.drop(columns='playlist_id'))
-
-sns.scatterplot(pca[:, 0], pca[:, 1], hue=dataset.playlist_id, legend=None)
-plt.title('PCA of audio features')
-plt.show()
-```
-
-
-![png](output_8_0.png)
-
-
-In this case, we see some good news.
+This is our final project for [Foundations of Data Science](https://emap.fgv.br/disciplina/mestrado/fundamentos-de-ciencia-de-dados), a Mathematical Modelling Master's subject at Getulio Vargas Foundation (FGV).
