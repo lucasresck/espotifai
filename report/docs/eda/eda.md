@@ -580,3 +580,655 @@ We see strong correlations between
 - `energy` and `loudness`: the more energy the song, the louder it is;
 - `valence` and `danceability`: the more valence (positiveness), the more danceable it is.
 - `instrumental` and `loudness`: we found that a instrumental song tends to be less louder.
+
+# Last.fm Dataset Analysis
+
+The considered datasets are: 
+
+- **Users**: information like gender, when he/her has registered, country, top artists, top tracks, etc. 
+- **Tracks**: information about reaching, playcounts, similar tracks, top tags, etc. 
+- **Artists**: information about number of listeners, top tracks, top albums, etc.
+- **Tags**: information about registration, taggings, reaching, etc. This tags is done by user. 
+
+
+```python
+FOLDER_PATH = '../../data/lastfm-api/'
+
+user_info_path = FOLDER_PATH + '1k_users_info_lastfm.json'
+track_info_path = FOLDER_PATH + 'tracks_lastfm_info.json'
+artist_info_path = FOLDER_PATH + 'artists_lastfm_info.json'
+tag_info_path = FOLDER_PATH + 'tags_lastfm_info.json'
+
+def get_random_users(filepath: str, quantity: int = 1000, random_state: int = 200) -> pd.DataFrame:
+    
+    users = pd.read_csv(filepath, index_col='user_id')
+    chosen_users = users.sample(n = quantity, replace = False, random_state = random_state, axis = 'index')
+    chosen_users.index = list(range(0,len(chosen_users)))
+
+    return chosen_users
+
+users_df = pd.read_csv(FOLDER_PATH + 'users_lastfm.csv', index_col='user_id')
+track_df = pd.read_csv(FOLDER_PATH + 'tracks.csv', sep = '\t', index_col='track_id')
+artist_df = pd.read_csv(FOLDER_PATH + 'artists.csv', sep = '\t', index_col='artist_id')
+tag_df = pd.read_csv(FOLDER_PATH + 'tags.csv', sep = '\t', index_col='tag_id')
+```
+
+## User Dataset
+
+The information are name, subscriber, playcount, registered_since, country, age, playlists, gender, loved_tracks, recent_tracks, top_tracks, top_tags, top_albums e top_artists. I observe all the users considered don't insert age information neither gender. Create playlists in Last.fm is not a common thing too! I get the unique values in the three columns
+
+How many subscribers and how is the refistration distribution? 
+
+
+```python
+fig, ax = plt.subplots(1, 3, figsize = (24,4.5))
+ax[2].pie(users_complete_df['subscriber'].value_counts(), labels = ['No', 'Yes'], labeldistance = None,
+       autopct='%1.1f%%', textprops = {'fontsize': 15})
+ax[2].set_title('Is subscriber?', fontsize = 13)
+ax[2].legend()
+
+years = [date.year for date in users_complete_df.registered_since]
+months = [date.month for date in users_complete_df.registered_since]
+
+sns.distplot(years, kde = False, bins = max(years) - min(years) + 1, norm_hist = True, ax = ax[0])
+ax[0].set_title('Year', fontsize = 13)
+sns.distplot(months, kde = False, bins = 12, norm_hist = True, ax = ax[1])
+ax[1].set_title('Month', fontsize = 13)
+ax[1].xaxis.set_major_locator(ticker.FixedLocator([1,2,3,4,5,6,7,8,9,10,11,12]))
+ax[1].xaxis.set_major_formatter(ticker.FixedFormatter(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']))
+fig.suptitle('When did the users register?', fontsize = 15)
+
+fig.savefig('../images/subscriber-registration.png')
+plt.show()
+```
+
+
+![png](output_5_0.png)
+
+
+In the following graphics: 
+
+- For each $x \mapsto f(x)$ if $x$ people have listened to more than $f(x)$ tracks!
+
+
+```python
+fig, ax = plt.subplots(figsize = (9,5))
+ax.set(xscale = 'log', yscale = 'log', xlim = (1,1000), ylim = (1, 6000000))
+sns.scatterplot(x = range(1, len(users_complete_df)+1), 
+                y = users_complete_df.playcount.sort_values(ascending = False), s = 20, color = 'black')
+ax.set_title('Playcounts', fontsize = 14)
+ax.set_xlabel('number of people')
+plt.show()
+```
+
+![png](output_7_0.png)
+
+We can see the distribution of the countries in the sample. Brazil, USA and United Kingdom has clear advantage. 
+
+```python
+fig, ax = plt.subplots(figsize = (17,4))
+countries_df = users_complete_df.country.value_counts(True)[users_complete_df.country.value_counts().values > 2] 
+sns.barplot(x = countries_df.index, 
+            y = countries_df.values, 
+            ax = ax)
+ax.set_xticklabels(labels = ax.get_xticklabels(), rotation = 60)
+ax.set_title('Users Countries', fontsize = 20)
+ax.set_xlabel('Countries')
+plt.show()
+```
+
+![png](output_9_0.png)
+
+Considering the top tags for the users, we can get the 10 tags more used in general (weighted by the number of counts) and the 10 tags more used by individuals (no weight). 
+
+```python
+top_tags_count_df = pd.DataFrame({'tag_id': list(top_tags_count_weight.keys()), 
+                                         'weight_user': list(top_tags_count_weight.values()), 
+                                         'users_listeners': list(top_tags_count.values())}
+                                        )
+tags = tag_df.merge(top_tags_count_df, on = 'tag_id')
+
+display(tags.sort_values(by = 'weight_user', ascending = False).head(10))
+display(tags.sort_values(by = 'users_listeners', ascending = False).head(10))
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tag_id</th>
+      <th>tag</th>
+      <th>weight_user</th>
+      <th>users_listeners</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>187</th>
+      <td>188</td>
+      <td>All</td>
+      <td>52112</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>217</th>
+      <td>218</td>
+      <td>spotify</td>
+      <td>45867</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>647</th>
+      <td>648</td>
+      <td>katarakt</td>
+      <td>4351</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>552</th>
+      <td>553</td>
+      <td>essentials</td>
+      <td>2836</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>648</th>
+      <td>649</td>
+      <td>scare the kids</td>
+      <td>2138</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>95</td>
+      <td>albums I own</td>
+      <td>1960</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>49</td>
+      <td>pop</td>
+      <td>1892</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>48</td>
+      <td>noise</td>
+      <td>1544</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>450</th>
+      <td>451</td>
+      <td>heavy metal</td>
+      <td>1502</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>649</th>
+      <td>650</td>
+      <td>ponyhof</td>
+      <td>1472</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tag_id</th>
+      <th>tag</th>
+      <th>weight_user</th>
+      <th>users_listeners</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>48</th>
+      <td>49</td>
+      <td>pop</td>
+      <td>1892</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>40</td>
+      <td>indie</td>
+      <td>667</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>50</td>
+      <td>rock</td>
+      <td>1425</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>68</td>
+      <td>electronic</td>
+      <td>845</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>51</td>
+      <td>alternative</td>
+      <td>753</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>106</td>
+      <td>experimental</td>
+      <td>889</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>60</td>
+      <td>female vocalists</td>
+      <td>1225</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>65</td>
+      <td>alternative rock</td>
+      <td>527</td>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Hip-Hop</td>
+      <td>248</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>folk</td>
+      <td>283</td>
+      <td>32</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## Tag Dataset
+
+The information are: 
+
+name, 
+reached, 
+taggings, 
+published, 
+toptracks, 
+topartists e
+topalbums
+
+We can see the tags topped by tagging by the user.
+
+```python
+reached = {int(key): tags_info[key]['reached'] for key in tags_info.keys() if len(tags_info[key]) > 0}
+tagging = {int(key): tags_info[key]['taggings'] for key in tags_info.keys() if len(tags_info[key]) > 0}
+published = {int(key): tags_info[key]['published'] for key in tags_info.keys() if len(tags_info[key]) > 0}
+tags_extra_info = pd.DataFrame({'tag_id': list(reached.keys()), 
+                             'tag_reached': list(reached.values()), 
+                                 'taggings': list(tagging.values()), 
+                             'published': list(published.values())})
+
+tags_complete_df = tag_df.merge(tags_extra_info, on = 'tag_id')
+tags_complete_df.sort_values(by = 'taggings', ascending = False, inplace = True)
+tags_complete_df.head(5)
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tag_id</th>
+      <th>tag</th>
+      <th>tag_reached</th>
+      <th>taggings</th>
+      <th>published</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>49</th>
+      <td>50</td>
+      <td>rock</td>
+      <td>395583</td>
+      <td>3979593</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>68</td>
+      <td>electronic</td>
+      <td>254123</td>
+      <td>2371259</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>74</td>
+      <td>seen live</td>
+      <td>81737</td>
+      <td>2142301</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>51</td>
+      <td>alternative</td>
+      <td>261864</td>
+      <td>2095454</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>40</td>
+      <td>indie</td>
+      <td>253561</td>
+      <td>2017410</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+## Artist Dataset
+
+The information are: 
+
+name, 
+listeners, 
+plays,
+published,
+topalbums,
+toptags,
+toptracks e
+similar
+
+
+```python
+fig, ax = plt.subplots(1,3, figsize = (18, 4.5))
+sns.distplot(artists_complete_df.year, kde = False, 
+            bins = int(artists_complete_df.year.max() - artists_complete_df.year.min()) + 1,
+            ax = ax[0])
+ax[0].set_title('Published Year on Last.fm', fontsize = 13)
+sns.distplot(artists_complete_df.listeners, kde = False, 
+            #bins = int(artists_complete_df.year.max() - artists_complete_df.year.min()) + 1,
+            ax = ax[1])
+ax[1].set_title('Distribution of Listeners on Last.fm', fontsize = 13)
+sns.distplot(artists_complete_df.plays, kde = False, 
+            #bins = int(artists_complete_df.year.max() - artists_complete_df.year.min()) + 1,
+            ax = ax[2])
+ax[2].set_title('Distribution of Plays', fontsize = 13)
+fig.suptitle('Artist Information', fontsize = 15)
+
+fig.savefig('../../images/artist_info.png')
+plt.show()
+```
+
+![png](output_17_0.png)
+
+## Artists Similarity
+
+Last.fm API has information about similar artists, given an artist imputed. I generate 20 similar artists from each artist of the subset of artists known from the dataset. The method of the API returns a degree of similarity, from 0 to 1. Below we can see de result. It takes long to make this graphic, so I save it. You can see the result. There are a lot of nan values because we do not have every degree of similary. 
+
+We can see there are a bigger relation in the roundness of the diagonal. This happens because the way the artist id was generated. For each user, we get its 20 top artists and numerate if the id does not exist. So, if two ids are closely, maybe it was generated by the same user, what is interesting, cause users may like similar artists.  
+
+### Subset of Artists Similary 
+
+Here we can see a subset of the matrix of artists' similarity. It's really sparse, as expected, because we get only 20 similar artists for each one. 
+
+![Figura](heatmap.png)
+
+## Track Dataset
+
+The information are: 
+
+name, 
+artist, 
+duration, 
+listeners, 
+playcount, 
+album, 
+published, 
+top_tags e
+similar
+
+
+```python
+info = []
+
+for key in tracks_info.keys():
+    if len(tracks_info[key]) == 0:
+        info.append([])
+        continue
+    d = tracks_info[key]['duration'] 
+    l = tracks_info[key]['listeners']
+    p = tracks_info[key]['playcount']
+    pu = tracks_info[key]['published']
+    tags = tracks_info[key]['top_tags']
+
+    info.append([int(key), int(d), int(l), int(p), pu])
+
+info_df = pd.DataFrame(info, columns = ['track_id', 'duration', 'listeners', 'playcount', 'published'])
+
+tracks_complete_df = track_df.merge(info_df, on = 'track_id')
+tracks_complete_df['year'] = tracks_complete_df['published'].apply(lambda x: int(x[0:4]) if x else None)
+tracks_complete_df.sample()
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>track_id</th>
+      <th>artist_name</th>
+      <th>track_name</th>
+      <th>duration</th>
+      <th>listeners</th>
+      <th>playcount</th>
+      <th>published</th>
+      <th>year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4608</th>
+      <td>4733</td>
+      <td>Godflesh</td>
+      <td>Streetcleaner</td>
+      <td>402000.0</td>
+      <td>30692.0</td>
+      <td>114054.0</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+We can see that published information is unavailable for a lot of tracks
+
+## Baseline model
+
+The ideia is simple and uses the models alreadt done by Last.fm. We believe is a good start, cause they have more information about the users. We'll get the artists from the tracks and top artists from the users. After that we will take the intersection, take the top 10 artists and take their top tracks. After we'll classify and get the 10 top songs to indicate!
+
+
+```python
+# Getting important variables
+FOLDER_SPOTIFY_PATH = '../../data/'
+
+tracks_sp_df = pd.read_pickle(FOLDER_SPOTIFY_PATH + 'sp_tracks_ready_*.pkl')
+tracks_sp_df = tracks_sp_df[['name', 'artists_names', 'playlist_id']]
+
+playlist_df = pd.read_pickle(FOLDER_SPOTIFY_PATH + 'sp_playlists.pkl')
+playlist_df = playlist_df[['id','owner_id']]
+
+API_LAST_KEY = input()
+API_LAST_SECRET = input()
+
+network = pylast.LastFMNetwork(API_LAST_KEY, API_LAST_SECRET)
+
+playlists = tracks_sp_df.playlist_id.unique()[0:10]
+```
+
+```python
+def song_indication(playlist_id: str, user_id: str, number_of_songs: int): 
+    
+    tracks = tracks_sp_df[tracks_sp_df.playlist_id == playlist_id]
+    artists_set = {}
+    user_artists_set = {}
+    
+    original_tracks = np.array(tracks[['name', 'artists_names']])
+    
+    for index, info in tracks.iterrows():
+        for artist in info.artists_names: 
+            artist = network.get_artist(artist)
+            if artist.name.lower() in artists_set:
+                artists_set[artist.name.lower()] += 1
+            else: 
+                artists_set[artist.name.lower()] = 1
+    
+    artists_set = {key: artists_set[key]/sum(artists_set.values()) 
+                   for key in artists_set.keys()}
+    
+    user = network.get_user(user_id)
+    top_artists = user.get_top_artists(limit = 200)
+    for top_artist in top_artists:
+        artist_name = top_artist.item.name
+        weight = top_artist.weight
+        user_artists_set[artist_name.lower()] = int(weight)
+    
+    uses_artists_set = {key: user_artists_set[key]/sum(user_artists_set.values())
+                        for key in user_artists_set.keys()}
+
+    chosen_artists = {key: artists_set[key]*user_artists_set[key] 
+                      for key in (artists_set.keys() & user_artists_set.keys())}
+    
+    if len(chosen_artists) == 0:
+        raise Exception('Sorry, this method does not work')
+    
+    # Take 10 at the limit!
+    chosen_artists = sorted(chosen_artists.items(), key = lambda x: x[1], reverse = True)[:10]
+    
+    top_tracks = []
+    
+    for artist_name in chosen_artists: 
+        artist = network.get_artist(artist_name[0])
+        tracks = artist.get_top_tracks(limit = 10)
+        for track in tracks:
+            top_tracks.append((artist_name[0], track.item.title, track.weight))
+    
+    chosen_tracks = sorted(top_tracks, key = lambda x: x[2], reverse = True)[:number_of_songs]
+    chosen_tracks = [(i[1], i[0])  for i in chosen_tracks]
+        
+    return chosen_tracks, original_tracks
+```
+
+```python
+position = 20
+indications, original = song_indication(playlist_df['id'].loc[position], 
+                                        playlist_df['owner_id'].iloc[position], 
+                                        5)
+print('The indications are: ')
+for ind in indications: 
+    print(ind)
+print('')
+print('The original were: ')
+for ori in original:
+    print(ori)
+```
+
+    The indications are: 
+    ('Tempo Perdido', 'legião urbana')
+    ('Pais e Filhos', 'legião urbana')
+    ('Índios', 'legião urbana')
+    ('Será', 'legião urbana')
+    ('Faroeste Caboclo', 'legião urbana')
+    
+    The original were: 
+    ['Sétimo Céu - Ao Vivo' list(['Geraldo Azevedo'])]
+    ['Respeita januario' list(['Luiz Gonzaga'])]
+    ['Não Pegue Esse Avião' list(['Cavaleiros do Forró'])]
+    ['Xote das Meninas' list(['Luiz Gonzaga'])]
+    ['Apenas Mais uma de Amor' list(['Lulu Santos'])]
+    ['100% Você' list(['Chiclete Com Banana'])]
+    ['Lanterna dos Afogados - Ao Vivo' list(['Maria Gadú'])]
+    ['A Vida Não Tá Fácil Prá Ninguém (Sony Music Live)' list(['Jota Quest'])]
+    ['Tempo Perdido' list(['Legião Urbana'])]
+
+
+## Conclusion 
+
+There are lot more information we could retrive, but we considered only a part of it, to test the initial models. It's a good API, but to get the links, it's really slow, what harms the Data Science pipelines. There is datasets already done with part of this information, but we prefered to generate cause it's more trustable and everyone can generate it. But remember it can take a long time. 
