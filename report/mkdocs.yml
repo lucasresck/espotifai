@@ -4,7 +4,7 @@ nav:
     - Overview: index.md
     - Related work: related_work.md
     - Project evolution: evolution.md
-    - EDA: eda.md
+    - EDA: eda/eda.md
     - Model based on track similarity: model_1/model.md
     - Model based on playlist similarity: model_2/model.md
     - Conclusion: conclusion.md
