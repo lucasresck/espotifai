@@ -5,7 +5,7 @@ nav:
     - Related work: related_work.md
     - Project evolution: evolution.md
     - EDA: eda.md
-    - Model based on track similarity: model_1.md
+    - Model based on track similarity: model_1/model.md
     - Model based on playlist similarity: model_2/model.md
     - Conclusion: conclusion.md
 
