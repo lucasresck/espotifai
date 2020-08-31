@@ -32,8 +32,9 @@ This features will be used to understand the data. We separate the metadata and 
 ```python
 metadata =  ['playlist_id', 'explicit', 'id', 'popularity', 'album_id', 
              'album_release_date', 'artists_ids']
-audio_features = ['danceability', 'energy', 'loudness', 'key', 'mode', 'speechiness', 'acousticness', 
-                  'instrumentalness', 'liveness', 'valence', 'tempo', 'time_signature', 'duration_ms', 'id']
+audio_features = ['danceability', 'energy', 'loudness', 'key', 'mode',
+                  'speechiness', 'acousticness', 'instrumentalness',
+                  'duration_ms', 'id']
 ```
 
 ## Playlist and Tracks dataframes 
@@ -75,13 +76,6 @@ tracks_df = tracks_df.merge(audio_features_df, on = 'id')
 del audio_features_df
 del a
 ```
-
-
-    HBox(children=(FloatProgress(value=0.0, max=128.0), HTML(value='')))
-
-
-    
-
 
 I will disconsider duplicated songs in the same playlist. I know it may happen, but the algorithm calculates similarity between tracks, and I know it's one. 
 
@@ -391,54 +385,8 @@ for alpha in alphas:
 
 print('The chosen alpha was {}'.format(sorted(evaluation.items(), key = lambda x: x[1], reverse = True)[0]))
 ```
-
-    INFO - Starting with alpha: 0.2 
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=8128.0), HTML(value='')))
-
-
-    
-    INFO - Starting with alpha: 0.4 
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=8128.0), HTML(value='')))
-
-
-    
-    INFO - Starting with alpha: 0.6 
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=8128.0), HTML(value='')))
-
-
-    
-    INFO - Starting with alpha: 0.8 
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=8128.0), HTML(value='')))
-
-
-    
-    INFO - Starting with alpha: 1.0 
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=8128.0), HTML(value='')))
-
-
     
     The chosen alpha was (1.0, 0.055581996102373604)
-
 
 
 ```python
@@ -465,13 +413,6 @@ alpha = sorted(evaluation.items(), key = lambda x: x[1], reverse = True)[0][0]
 model = SimilarityModel(tracks_subset, train)
 model.fit(alpha = alpha)        
 ```
-
-
-    HBox(children=(FloatProgress(value=0.0, max=10160.0), HTML(value='')))
-
-
-    
-
 
 ### Let's see in the testing ad training set
 
@@ -501,35 +442,6 @@ for rate in rates:
 evaluation = pd.DataFrame(evaluation, index = range(4))
 ```
 
-
-    HBox(children=(FloatProgress(value=0.0, max=10160.0), HTML(value='')))
-
-
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=10160.0), HTML(value='')))
-
-
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=10160.0), HTML(value='')))
-
-
-    
-
-
-
-    HBox(children=(FloatProgress(value=0.0, max=10160.0), HTML(value='')))
-
-
-    
-
-
-
 ```python
 fig, ax = plt.subplots(1,2,figsize = (15, 5))
 
@@ -555,9 +467,5 @@ plt.show()
 
 ## Conclusion
 
-With low rates, the algorithm performs better. Also, we have to notice that we do not use all the information due to computational cost, but it could improve the results! A well done prefilter could be good to the data, but none thought was good enough. 
+With low rates, the algorithm performs better. Also, we have to notice that we do not use all the information due to computational cost, but it could improve the results! A well done prefilter could be good to the data, but none thought was good enough.
 
-
-```python
-
-```
