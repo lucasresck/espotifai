@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
-     <loc>None</loc>
-     <lastmod>2020-08-30</lastmod>
+     <loc>https://lucasresck.github.io/espotifai/</loc>
+     <lastmod>2020-08-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lucasresck.github.io/espotifai/related_work/</loc>
+     <lastmod>2020-08-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lucasresck.github.io/espotifai/evolution/</loc>
+     <lastmod>2020-08-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lucasresck.github.io/espotifai/eda/</loc>
+     <lastmod>2020-08-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lucasresck.github.io/espotifai/model_1/</loc>
+     <lastmod>2020-08-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lucasresck.github.io/espotifai/model_2/</loc>
+     <lastmod>2020-08-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://lucasresck.github.io/espotifai/conclusion/</loc>
+     <lastmod>2020-08-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
