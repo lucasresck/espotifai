@@ -4,13 +4,16 @@
 
 **Espotifai** is our approach to the **playlist continuation problem**. That is, given a playlist, how to continuate it?
 
-We know that nowadays recommenders are extremely important, both for the greater production of content never seen before, and for the massive access provided by digital platforms. Music recommendation is no exception, so it is important to study and develop ways to match people and music they like or they will like.
+We know nowadays recommenders are extremely important, both for the greater production of content never seen before, and for the massive access provided by digital platforms. Music recommendation is no exception, so it is important to study and develop ways to match people and music they like or they will like.
 
 We studied and implemented two algorithms that try to solve the problem of playlist continuation, inspired by [Kelen et al.](https://dl.acm.org/doi/10.1145/3267471.3267477) and [Pauws and Eggen](http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf). Both of them use an idea of k-NN, but the former use a similarity among playlists and the latter use a similarity among tracks.
 
 ## Motivation
 
-We both love music, and the music reccomendation systems intrigue us.
+Recommendation is pretty intrigating, because we have to know by advance what
+the person would like to listen in a specific time. That's a hard task, due to
+the human complexity, however we can simplify this problem and we like that!
+Math is all about that!! And of course, we love music! 
 
 ## Our goals
 
