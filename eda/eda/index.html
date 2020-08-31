@@ -1,0 +1,1666 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://lucasresck.github.io/espotifai/eda/eda/">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.11">
+    
+    
+      
+        <title>EDA - Espotifai</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.860688db.min.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.943997b5.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#000000">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#exploratory-data-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://lucasresck.github.io/espotifai/" title="Espotifai" class="md-header-nav__button md-logo" aria-label="Espotifai">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Espotifai
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              EDA
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/lucasresck/espotifai/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://lucasresck.github.io/espotifai/" title="Espotifai" class="md-nav__button md-logo" aria-label="Espotifai">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Espotifai
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/lucasresck/espotifai/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../related_work/" title="Related work" class="md-nav__link">
+      Related work
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../evolution/" title="Project evolution" class="md-nav__link">
+      Project evolution
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        EDA
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="EDA" class="md-nav__link md-nav__link--active">
+      EDA
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spotify-dataset-analysis" class="md-nav__link">
+    Spotify dataset analysis
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotify dataset analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tracks-dataset" class="md-nav__link">
+    Tracks dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playlists-dataset" class="md-nav__link">
+    Playlists dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audio-features-dataset" class="md-nav__link">
+    Audio features dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artists-dataset" class="md-nav__link">
+    Artists dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualizations" class="md-nav__link">
+    Visualizations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lastfm-dataset-analysis" class="md-nav__link">
+    Last.fm Dataset Analysis
+  </a>
+  
+    <nav class="md-nav" aria-label="Last.fm Dataset Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-dataset" class="md-nav__link">
+    User Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-dataset" class="md-nav__link">
+    Tag Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artist-dataset" class="md-nav__link">
+    Artist Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artists-similarity" class="md-nav__link">
+    Artists Similarity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-dataset" class="md-nav__link">
+    Track Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#baseline-model" class="md-nav__link">
+    Baseline model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../model_1/model/" title="Model based on track similarity" class="md-nav__link">
+      Model based on track similarity
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../model_2/model/" title="Model based on playlist similarity" class="md-nav__link">
+      Model based on playlist similarity
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../conclusion/" title="Conclusion" class="md-nav__link">
+      Conclusion
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spotify-dataset-analysis" class="md-nav__link">
+    Spotify dataset analysis
+  </a>
+  
+    <nav class="md-nav" aria-label="Spotify dataset analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tracks-dataset" class="md-nav__link">
+    Tracks dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playlists-dataset" class="md-nav__link">
+    Playlists dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audio-features-dataset" class="md-nav__link">
+    Audio features dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artists-dataset" class="md-nav__link">
+    Artists dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualizations" class="md-nav__link">
+    Visualizations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lastfm-dataset-analysis" class="md-nav__link">
+    Last.fm Dataset Analysis
+  </a>
+  
+    <nav class="md-nav" aria-label="Last.fm Dataset Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-dataset" class="md-nav__link">
+    User Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-dataset" class="md-nav__link">
+    Tag Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artist-dataset" class="md-nav__link">
+    Artist Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artists-similarity" class="md-nav__link">
+    Artists Similarity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-dataset" class="md-nav__link">
+    Track Dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#baseline-model" class="md-nav__link">
+    Baseline model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/lucasresck/espotifai/edit/master/docs/eda/eda.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                <h1 id="exploratory-data-analysis">Exploratory Data Analysis</h1>
+<p>We created two datasets: the Spotify's and the Last.fm's.</p>
+<h2 id="spotify-dataset-analysis">Spotify dataset analysis</h2>
+<p>Spotify has a web API, and this API has a translation to Python called Spotipy. It allows us to search for tracks, playlists and artists data. Among all the information available, there exists what is called <em>audio features</em>, that is, musical metrics like <code>danceability</code>, <code>loudness</code> and <code>instrumentalness</code>, which could be important for recommendation systems.</p>
+<p>Data was captured using the API. The approach was:
+1. We started with a big number of Last.fm users, because Last.fm allows network search (search for the friends of a user, and its friends, and so on...);
+2. We select a subset of 1000 random users which also has a Spotify account;
+3. We selected their public playlists;
+4. We selected the tracks from these playlists;
+5. We selected the audio features and the artists from these tracks.</p>
+<p>It's important to note that songs don't have genres using this API. Who has genre is the artist of the track. So it's necessary to gather the artists of the tracks in order to have genre information.</p>
+<p>At the end, we have:</p>
+<ul>
+<li>Users <strong>tracks</strong> dataset;</li>
+<li>List of <strong>users</strong>;</li>
+<li><strong>Playlists</strong> of the tracks;</li>
+<li><strong>Audio features</strong> of the tracks;</li>
+<li><strong>Artists</strong> of the tracks.</li>
+</ul>
+<p>We now make some exploration in order to get known the data and have insights for the recommendation models.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Necessary to improve exploration</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># Beautiful Seaborn</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</code></pre></div>
+
+<p>We have many datasets, and we wanna know its variables. Let's sample them.</p>
+<h3 id="tracks-dataset">Tracks dataset</h3>
+<div class="highlight"><pre><span></span><code><span class="n">tracks</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;../../data/sp_tracks_ready_999.pkl&#39;</span><span class="p">)</span>
+<span class="n">tracks</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>added_at</th>
+      <th>added_by</th>
+      <th>is_local</th>
+      <th>playlist_id</th>
+      <th>available_markets</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>15746</th>
+      <td>2018-06-23 20:54:16+00:00</td>
+      <td>isab3lla</td>
+      <td>False</td>
+      <td>3sBVA5SQr1uzHRSSzidYNy</td>
+      <td>[SE]</td>
+      <td>...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>Tracks</strong> dataset is big enough to make we split it in many files. So we did it. At now we have 11 files just for the tracks. But the other datasets are compressed in a single file each one.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">list</span><span class="p">(</span><span class="n">tracks</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>[&#39;added_at&#39;,
+ &#39;added_by&#39;,
+ &#39;is_local&#39;,
+ &#39;playlist_id&#39;,
+ &#39;available_markets&#39;,
+ &#39;disc_number&#39;,
+ &#39;duration_ms&#39;,
+ &#39;explicit&#39;,
+ &#39;id&#39;,
+ &#39;name&#39;,
+ &#39;popularity&#39;,
+ &#39;track_number&#39;,
+ &#39;album_type&#39;,
+ &#39;album_available_markets&#39;,
+ &#39;album_id&#39;,
+ &#39;album_name&#39;,
+ &#39;album_release_date&#39;,
+ &#39;artists_ids&#39;,
+ &#39;artists_names&#39;,
+ &#39;album_artists_ids&#39;,
+ &#39;album_artists_names&#39;]
+</code></pre></div>
+
+<p>It's important to note that everything on Spotify have an ID. So when we have a song and know the ID of one playlist that contains it, we can use this playlist ID to search for the playlist data.</p>
+<p>In the dataset, we see that a track have many features, which can be viewed as:</p>
+<ul>
+<li><strong>Playlist</strong> features: information about the playlists, like when the song was added, who added it and the ID of the playlist.</li>
+<li><strong>Track</strong> features: like <code>disc_number</code>, its duration, if its explicit, <code>id</code>, its name, popularity and its number.</li>
+<li><strong>Album</strong> features, including artists of the album;</li>
+<li><strong>Artists</strong> features: their IDs and names.</li>
+</ul>
+<p>Many features have lists as values. It's because some of them have values which vary in length, like the <code>artists_ids</code>. We don't know if we will have 1, 2 or 32 artists. It will happen with other datasets too.</p>
+<h3 id="playlists-dataset">Playlists dataset</h3>
+<div class="highlight"><pre><span></span><code><span class="n">playlists</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;../../data/sp_playlists.pkl&#39;</span><span class="p">)</span>
+<span class="n">playlists</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>collaborative</th>
+      <th>description</th>
+      <th>id</th>
+      <th>name</th>
+      <th>primary_color</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>915</th>
+      <td>False</td>
+      <td></td>
+      <td>4cbOOTE5HPaKHd7dbgRk8L</td>
+      <td>The Hellacopters Top Hits</td>
+      <td>None</td>
+      <td>...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Here we have basic information about a public playlist. One thing to note is that everything Spotipy returns is a JSON file, in the 'records' format. So in the column <code>tracks</code> we have a dict containing information about the tracks.</p>
+<div class="highlight"><pre><span></span><code><span class="n">playlists</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;tracks&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>{&#39;href&#39;: &#39;https://api.spotify.com/v1/playlists/0itjZK4e1qZzHL9fNInUJR/tracks&#39;,
+ &#39;total&#39;: 63}
+</code></pre></div>
+
+<p>It's little information, but it's not important. The tracks was gathered from the playlist using the ID of the playlist.</p>
+<h3 id="audio-features-dataset">Audio features dataset</h3>
+<p>Maybe only track information is not enough to make good recommendation systems. So we gather more information, this time more technician:</p>
+<div class="highlight"><pre><span></span><code><span class="n">audio_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;../../data/sp_audio_features.pkl&#39;</span><span class="p">)</span>
+<span class="n">audio_features</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>danceability</th>
+      <th>energy</th>
+      <th>key</th>
+      <th>loudness</th>
+      <th>mode</th>
+      <th>speechiness</th>
+      <th>acousticness</th>
+      <th>instrumentalness</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>37769</th>
+      <td>0.553</td>
+      <td>0.67</td>
+      <td>6</td>
+      <td>-4.601</td>
+      <td>1</td>
+      <td>0.0302</td>
+      <td>0.0213</td>
+      <td>0.0</td>
+      <td>...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Here we have the ID of the track and its features, like <code>liveness</code> and <code>speechiness</code>. More information about this technical parte can be found on the <a href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/">documentation of the Web API</a>.</p>
+<p>Another thing to note is that some of <code>duration_ms</code> differs from the ones in the tracks database. Let's see:</p>
+<div class="highlight"><pre><span></span><code><span class="n">my_id</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">while</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">my_id</span><span class="p">):</span>
+    <span class="n">my_id</span> <span class="o">=</span> <span class="n">tracks</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span>
+    <span class="n">tracks</span><span class="p">[</span><span class="n">tracks</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">my_id</span><span class="p">]</span><span class="o">.</span><span class="n">duration_ms</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">audio_features</span><span class="p">[</span><span class="n">audio_features</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">my_id</span><span class="p">]</span><span class="o">.</span><span class="n">duration_ms</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>248266.0 248267
+</code></pre></div>
+
+<h3 id="artists-dataset">Artists dataset</h3>
+<div class="highlight"><pre><span></span><code><span class="n">artists</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="s1">&#39;../../data/sp_artists.pkl&#39;</span><span class="p">)</span>
+<span class="n">artists</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>followers</th>
+      <th>genres</th>
+      <th>id</th>
+      <th>name</th>
+      <th>popularity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>48244</th>
+      <td>4560</td>
+      <td>[australian metal, melodic progressive metal]</td>
+      <td>1DuzOaU8hyIpzzRQFpAO9b</td>
+      <td>Hemina</td>
+      <td>21</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Artists datasets are simple and autoexplanative. It's important to note <code>genres</code> features, because each cell is a list of genres. As already said, the only way to classify a song in a genre is with the genres of its artists.</p>
+<h3 id="visualizations">Visualizations</h3>
+<p><strong>When a track was added to a playlist?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="s1">&#39;added_at&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;../../data/sp_tracks_ready_*.pkl&#39;</span><span class="p">)],</span>
+    <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Histogram of added_at&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Year&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_28_0.png" /></p>
+<p>The max date is:</p>
+<div class="highlight"><pre><span></span><code><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>Timestamp(&#39;2042-07-07 10:02:09+0000&#39;, tz=&#39;UTC&#39;)
+</code></pre></div>
+
+<p>We see some outliers, so we filter them:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">data</span><span class="p">[(</span><span class="n">data</span> <span class="o">&gt;</span> <span class="s1">&#39;2000&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span> <span class="o">&lt;</span> <span class="s1">&#39;2021&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Histogram of added_at&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Year&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_32_0.png" /></p>
+<p>Most of the songs were added recently.</p>
+<p><strong>How much time does a track take?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="s1">&#39;duration_ms&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;../../data/sp_tracks_ready_*.pkl&#39;</span><span class="p">)],</span>
+    <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="mf">1e6</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribution of the duration of the tracks (in ms)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_35_0.png" /></p>
+<p>The mode of the songs has 3min20s.</p>
+<p><strong>How danceable, louder, ... are the songs?</strong></p>
+<p>Audio features dataset has a lot of variables, so we explore some of them.</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;danceability&#39;</span><span class="p">,</span> <span class="s1">&#39;loudness&#39;</span><span class="p">,</span> <span class="s1">&#39;instrumentalness&#39;</span><span class="p">,</span> <span class="s1">&#39;tempo&#39;</span><span class="p">]:</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">audio_features</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of &#39;</span> <span class="o">+</span> <span class="n">variable</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">variable</span> <span class="o">==</span> <span class="s1">&#39;loudness&#39;</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;loudness (dB)&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">variable</span> <span class="o">==</span> <span class="s1">&#39;tempo&#39;</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;tempo (BPM)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_39_0.png" /></p>
+<p><img alt="png" src="../output_39_1.png" /></p>
+<p><img alt="png" src="../output_39_2.png" /></p>
+<p><img alt="png" src="../output_39_3.png" /></p>
+<p>The features above describe a confidence or a metric made by Spotify. We see that <code>danceability</code> (how danceable a track is) has a very nice distribution, that is, most of songs are quite danceable. <code>Loudness</code> (in dB) concentrates itself around -10dB.</p>
+<p>The distribution of <code>instrumentalness</code> is curious: there are tracks we may say they are instrumental (around 0.9), there are tracks we would say it's not instrumental (close to, but not equal to, zero), and there are many many songs we are sure they are not instrumental (very close to or equal to zero). Maybe it's because it's easy to say a song is not instrumental (it's easy to recognize voice), but the reverse is not so true, that is, to ensure the song is instrumental. <code>temp</code> is another variable with a quite nice distribution. Songs vary it's tempo (in BPM) around 120.</p>
+<p>One thing to say is that these graphs are quite compatible with those from <a href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/">Spotify's Web API</a>. It suggests that we are in the right way with our data.</p>
+<p><strong>How popular are the artists?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">artists</span><span class="o">.</span><span class="n">popularity</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of artists popularity&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_43_0.png" /></p>
+<p>This distribution is very close to the distribution of the popularity of the songs, curiously.</p>
+<p><strong>Finnaly, what are the genres with more tracks?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># We will only sample data because the datasets are big</span>
+<span class="c1"># This cell takes a while to run</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="s1">&#39;artists_ids&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;../../data/sp_tracks_ready_*.pkl&#39;</span><span class="p">)],</span>
+    <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">artist_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">to_list</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">artist_id</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">artist_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">artist_id</span><span class="p">)</span>
+
+<span class="n">genres</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">artist_ids</span><span class="p">:</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">artists</span><span class="p">[</span><span class="n">artists</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">genres</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">genres</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+<span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">genres</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
+    <span class="nb">list</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">()))[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">15</span><span class="p">]),</span>
+    <span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">genres</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">()))[</span><span class="mi">1</span><span class="p">]][:</span><span class="mi">15</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Genres with more tracks&quot;</span><span class="p">)</span>
+
+<span class="c1"># https://stackoverflow.com/a/31357733</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:,.2%}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_46_0.png" /></p>
+<p>Again, that's pretty reasonable. Pop and rock was expected to be in this list, so as rap and hip hop. Again, maybe the percentages seem small, but we have a lot of them (only in the sample):</p>
+<div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">genres</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>2297
+</code></pre></div>
+
+<p>Many of the genres as sub-sub-subgenres, as you can see:</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">genres</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">genres</span><span class="p">))]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">)]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>[&#39;piseiro&#39;,
+ &#39;latin rock&#39;,
+ &#39;alternative dance&#39;,
+ &#39;instrumental rock&#39;,
+ &#39;baile pop&#39;,
+ &#39;indie soul&#39;,
+ &#39;rock&#39;,
+ &#39;swedish synthpop&#39;,
+ &#39;singer-songwriter&#39;,
+ &#39;alternative hip hop&#39;,
+ &#39;skate punk&#39;,
+ &#39;shimmer pop&#39;,
+ &#39;dance pop&#39;,
+ &#39;hip hop&#39;,
+ &#39;german underground rap&#39;]
+</code></pre></div>
+
+<p><strong>Are there correlations between numerical variables?</strong></p>
+<p>Let's analyse correlation in audio features dataset.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">audio_features</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Correlation between audio features&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_53_0.png" /></p>
+<p>We see strong correlations between</p>
+<ul>
+<li><code>acousticness</code> and <code>energy</code>: they have strong negative correlation, because acoustic tracks in general are more calm;</li>
+<li><code>acousticness</code> and <code>loudness</code>: the same as the latter;</li>
+<li><code>energy</code> and <code>loudness</code>: the more energy the song, the louder it is;</li>
+<li><code>valence</code> and <code>danceability</code>: the more valence (positiveness), the more danceable it is.</li>
+<li><code>instrumental</code> and <code>loudness</code>: we found that a instrumental song tends to be less louder.</li>
+</ul>
+<h2 id="lastfm-dataset-analysis">Last.fm Dataset Analysis</h2>
+<p>The considered datasets are: </p>
+<ul>
+<li><strong>Users</strong>: information like gender, when he/her has registered, country, top artists, top tracks, etc. </li>
+<li><strong>Tracks</strong>: information about reaching, playcounts, similar tracks, top tags, etc. </li>
+<li><strong>Artists</strong>: information about number of listeners, top tracks, top albums, etc.</li>
+<li><strong>Tags</strong>: information about registration, taggings, reaching, etc. This tags is done by user. </li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">FOLDER_PATH</span> <span class="o">=</span> <span class="s1">&#39;../../data/lastfm-api/&#39;</span>
+
+<span class="n">user_info_path</span> <span class="o">=</span> <span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;1k_users_info_lastfm.json&#39;</span>
+<span class="n">track_info_path</span> <span class="o">=</span> <span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;tracks_lastfm_info.json&#39;</span>
+<span class="n">artist_info_path</span> <span class="o">=</span> <span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;artists_lastfm_info.json&#39;</span>
+<span class="n">tag_info_path</span> <span class="o">=</span> <span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;tags_lastfm_info.json&#39;</span>
+
+<span class="k">def</span> <span class="nf">get_random_users</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+    <span class="n">users</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+    <span class="n">chosen_users</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+    <span class="n">chosen_users</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">chosen_users</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">chosen_users</span>
+
+<span class="n">users_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;users_lastfm.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+<span class="n">track_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;tracks.csv&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;track_id&#39;</span><span class="p">)</span>
+<span class="n">artist_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;artists.csv&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;artist_id&#39;</span><span class="p">)</span>
+<span class="n">tag_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">FOLDER_PATH</span> <span class="o">+</span> <span class="s1">&#39;tags.csv&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;tag_id&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="user-dataset">User Dataset</h3>
+<p>The information are name, subscriber, playcount, registered_since, country, age, playlists, gender, loved_tracks, recent_tracks, top_tracks, top_tags, top_albums e top_artists. I observe all the users considered don't insert age information neither gender. Create playlists in Last.fm is not a common thing too! I get the unique values in the three columns</p>
+<p>How many subscribers and how is the refistration distribution? </p>
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span><span class="mf">4.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">users_complete_df</span><span class="p">[</span><span class="s1">&#39;subscriber&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(),</span> <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Yes&#39;</span><span class="p">],</span> <span class="n">labeldistance</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+       <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">textprops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fontsize&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">})</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Is subscriber?&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">users_complete_df</span><span class="o">.</span><span class="n">registered_since</span><span class="p">]</span>
+<span class="n">months</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">month</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">users_complete_df</span><span class="o">.</span><span class="n">registered_since</span><span class="p">]</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">kde</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">years</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">years</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">norm_hist</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">kde</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">norm_hist</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FixedLocator</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">]))</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FixedFormatter</span><span class="p">([</span><span class="s1">&#39;Jan&#39;</span><span class="p">,</span> <span class="s1">&#39;Feb&#39;</span><span class="p">,</span> <span class="s1">&#39;Mar&#39;</span><span class="p">,</span> <span class="s1">&#39;Apr&#39;</span><span class="p">,</span> <span class="s1">&#39;May&#39;</span><span class="p">,</span> <span class="s1">&#39;Jun&#39;</span><span class="p">,</span> 
+                                                       <span class="s1">&#39;Jul&#39;</span><span class="p">,</span> <span class="s1">&#39;Aug&#39;</span><span class="p">,</span> <span class="s1">&#39;Sep&#39;</span><span class="p">,</span> <span class="s1">&#39;Oct&#39;</span><span class="p">,</span> <span class="s1">&#39;Nov&#39;</span><span class="p">,</span> <span class="s1">&#39;Dec&#39;</span><span class="p">]))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;When did the users register?&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;../images/subscriber-registration.png&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_5_0.png" /></p>
+<p>In the following graphics: </p>
+<ul>
+<li>For each <script type="math/tex">x \mapsto f(x)</script> if <script type="math/tex">x</script> people have listened to more than <script type="math/tex">f(x)</script> tracks!</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xscale</span> <span class="o">=</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">yscale</span> <span class="o">=</span> <span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6000000</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">users_complete_df</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> 
+                <span class="n">y</span> <span class="o">=</span> <span class="n">users_complete_df</span><span class="o">.</span><span class="n">playcount</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Playcounts&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;number of people&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_7_0.png" /></p>
+<p>We can see the distribution of the countries in the sample. Brazil, USA and United Kingdom has clear advantage. </p>
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">countries_df</span> <span class="o">=</span> <span class="n">users_complete_df</span><span class="o">.</span><span class="n">country</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="kc">True</span><span class="p">)[</span><span class="n">users_complete_df</span><span class="o">.</span><span class="n">country</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span> 
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">countries_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> 
+            <span class="n">y</span> <span class="o">=</span> <span class="n">countries_df</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span> <span class="o">=</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Users Countries&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Countries&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_9_0.png" /></p>
+<p>Considering the top tags for the users, we can get the 10 tags more used in general (weighted by the number of counts) and the 10 tags more used by individuals (no weight). </p>
+<div class="highlight"><pre><span></span><code><span class="n">top_tags_count_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">top_tags_count_weight</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> 
+                                         <span class="s1">&#39;weight_user&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">top_tags_count_weight</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> 
+                                         <span class="s1">&#39;users_listeners&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">top_tags_count</span><span class="o">.</span><span class="n">values</span><span class="p">())}</span>
+                                        <span class="p">)</span>
+<span class="n">tags</span> <span class="o">=</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">top_tags_count_df</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;tag_id&#39;</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">tags</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s1">&#39;weight_user&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">tags</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s1">&#39;users_listeners&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tag_id</th>
+      <th>tag</th>
+      <th>weight_user</th>
+      <th>users_listeners</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>187</th>
+      <td>188</td>
+      <td>All</td>
+      <td>52112</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>217</th>
+      <td>218</td>
+      <td>spotify</td>
+      <td>45867</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>647</th>
+      <td>648</td>
+      <td>katarakt</td>
+      <td>4351</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>552</th>
+      <td>553</td>
+      <td>essentials</td>
+      <td>2836</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>648</th>
+      <td>649</td>
+      <td>scare the kids</td>
+      <td>2138</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>95</td>
+      <td>albums I own</td>
+      <td>1960</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>49</td>
+      <td>pop</td>
+      <td>1892</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>48</td>
+      <td>noise</td>
+      <td>1544</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>450</th>
+      <td>451</td>
+      <td>heavy metal</td>
+      <td>1502</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>649</th>
+      <td>650</td>
+      <td>ponyhof</td>
+      <td>1472</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tag_id</th>
+      <th>tag</th>
+      <th>weight_user</th>
+      <th>users_listeners</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>48</th>
+      <td>49</td>
+      <td>pop</td>
+      <td>1892</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>40</td>
+      <td>indie</td>
+      <td>667</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>50</td>
+      <td>rock</td>
+      <td>1425</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>68</td>
+      <td>electronic</td>
+      <td>845</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>51</td>
+      <td>alternative</td>
+      <td>753</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>106</td>
+      <td>experimental</td>
+      <td>889</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>60</td>
+      <td>female vocalists</td>
+      <td>1225</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>65</td>
+      <td>alternative rock</td>
+      <td>527</td>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Hip-Hop</td>
+      <td>248</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>folk</td>
+      <td>283</td>
+      <td>32</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="tag-dataset">Tag Dataset</h3>
+<p>The information are: </p>
+<p>name, 
+reached, 
+taggings, 
+published, 
+toptracks, 
+topartists e
+topalbums</p>
+<p>We can see the tags topped by tagging by the user.</p>
+<div class="highlight"><pre><span></span><code><span class="n">reached</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">tags_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;reached&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tags_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags_info</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+<span class="n">tagging</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">tags_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;taggings&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tags_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags_info</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+<span class="n">published</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">tags_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;published&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tags_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags_info</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+<span class="n">tags_extra_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;tag_id&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">reached</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> 
+                             <span class="s1">&#39;tag_reached&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">reached</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> 
+                                 <span class="s1">&#39;taggings&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">tagging</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> 
+                             <span class="s1">&#39;published&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">published</span><span class="o">.</span><span class="n">values</span><span class="p">())})</span>
+
+<span class="n">tags_complete_df</span> <span class="o">=</span> <span class="n">tag_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">tags_extra_info</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;tag_id&#39;</span><span class="p">)</span>
+<span class="n">tags_complete_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s1">&#39;taggings&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">tags_complete_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tag_id</th>
+      <th>tag</th>
+      <th>tag_reached</th>
+      <th>taggings</th>
+      <th>published</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>49</th>
+      <td>50</td>
+      <td>rock</td>
+      <td>395583</td>
+      <td>3979593</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>68</td>
+      <td>electronic</td>
+      <td>254123</td>
+      <td>2371259</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>74</td>
+      <td>seen live</td>
+      <td>81737</td>
+      <td>2142301</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>51</td>
+      <td>alternative</td>
+      <td>261864</td>
+      <td>2095454</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>40</td>
+      <td>indie</td>
+      <td>253561</td>
+      <td>2017410</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="artist-dataset">Artist Dataset</h3>
+<p>The information are: </p>
+<p>name, 
+listeners, 
+plays,
+published,
+topalbums,
+toptags,
+toptracks e
+similar</p>
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">artists_complete_df</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">kde</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="n">bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">artists_complete_df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">artists_complete_df</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Published Year on Last.fm&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">artists_complete_df</span><span class="o">.</span><span class="n">listeners</span><span class="p">,</span> <span class="n">kde</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="c1">#bins = int(artists_complete_df.year.max() - artists_complete_df.year.min()) + 1,</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution of Listeners on Last.fm&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">artists_complete_df</span><span class="o">.</span><span class="n">plays</span><span class="p">,</span> <span class="n">kde</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="c1">#bins = int(artists_complete_df.year.max() - artists_complete_df.year.min()) + 1,</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution of Plays&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Artist Information&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;../../images/artist_info.png&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p><img alt="png" src="../output_17_0.png" /></p>
+<h3 id="artists-similarity">Artists Similarity</h3>
+<p>Last.fm API has information about similar artists, given an artist imputed. I generate 20 similar artists from each artist of the subset of artists known from the dataset. The method of the API returns a degree of similarity, from 0 to 1. Below we can see de result. It takes long to make this graphic, so I save it. You can see the result. There are a lot of nan values because we do not have every degree of similary. </p>
+<p>We can see there are a bigger relation in the roundness of the diagonal. This happens because the way the artist id was generated. For each user, we get its 20 top artists and numerate if the id does not exist. So, if two ids are closely, maybe it was generated by the same user, what is interesting, cause users may like similar artists.  </p>
+<p><strong>Subset of Artists Similary</strong></p>
+<p>Here we can see a subset of the matrix of artists' similarity. It's really sparse, as expected, because we get only 20 similar artists for each one. </p>
+<p><img alt="Figura" src="../heatmap.png" /></p>
+<h3 id="track-dataset">Track Dataset</h3>
+<p>The information are: </p>
+<p>name, 
+artist, 
+duration, 
+listeners, 
+playcount, 
+album, 
+published, 
+top_tags e
+similar</p>
+<div class="highlight"><pre><span></span><code><span class="n">info</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tracks_info</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tracks_info</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="k">continue</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">tracks_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> 
+    <span class="n">l</span> <span class="o">=</span> <span class="n">tracks_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;listeners&#39;</span><span class="p">]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">tracks_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;playcount&#39;</span><span class="p">]</span>
+    <span class="n">pu</span> <span class="o">=</span> <span class="n">tracks_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;published&#39;</span><span class="p">]</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="n">tracks_info</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;top_tags&#39;</span><span class="p">]</span>
+
+    <span class="n">info</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">pu</span><span class="p">])</span>
+
+<span class="n">info_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;track_id&#39;</span><span class="p">,</span> <span class="s1">&#39;duration&#39;</span><span class="p">,</span> <span class="s1">&#39;listeners&#39;</span><span class="p">,</span> <span class="s1">&#39;playcount&#39;</span><span class="p">,</span> <span class="s1">&#39;published&#39;</span><span class="p">])</span>
+
+<span class="n">tracks_complete_df</span> <span class="o">=</span> <span class="n">track_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">info_df</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;track_id&#39;</span><span class="p">)</span>
+<span class="n">tracks_complete_df</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tracks_complete_df</span><span class="p">[</span><span class="s1">&#39;published&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">tracks_complete_df</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>track_id</th>
+      <th>artist_name</th>
+      <th>track_name</th>
+      <th>duration</th>
+      <th>listeners</th>
+      <th>playcount</th>
+      <th>published</th>
+      <th>year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4608</th>
+      <td>4733</td>
+      <td>Godflesh</td>
+      <td>Streetcleaner</td>
+      <td>402000.0</td>
+      <td>30692.0</td>
+      <td>114054.0</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>We can see that published information is unavailable for a lot of tracks</p>
+<h3 id="baseline-model">Baseline model</h3>
+<p>The ideia is simple and uses the models alreadt done by Last.fm. We believe is a good start, cause they have more information about the users. We'll get the artists from the tracks and top artists from the users. After that we will take the intersection, take the top 10 artists and take their top tracks. After we'll classify and get the 10 top songs to indicate!</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Getting important variables</span>
+<span class="n">FOLDER_SPOTIFY_PATH</span> <span class="o">=</span> <span class="s1">&#39;../../data/&#39;</span>
+
+<span class="n">tracks_sp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">FOLDER_SPOTIFY_PATH</span> <span class="o">+</span> <span class="s1">&#39;sp_tracks_ready_*.pkl&#39;</span><span class="p">)</span>
+<span class="n">tracks_sp_df</span> <span class="o">=</span> <span class="n">tracks_sp_df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;artists_names&#39;</span><span class="p">,</span> <span class="s1">&#39;playlist_id&#39;</span><span class="p">]]</span>
+
+<span class="n">playlist_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">FOLDER_SPOTIFY_PATH</span> <span class="o">+</span> <span class="s1">&#39;sp_playlists.pkl&#39;</span><span class="p">)</span>
+<span class="n">playlist_df</span> <span class="o">=</span> <span class="n">playlist_df</span><span class="p">[[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;owner_id&#39;</span><span class="p">]]</span>
+
+<span class="n">API_LAST_KEY</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+<span class="n">API_LAST_SECRET</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">pylast</span><span class="o">.</span><span class="n">LastFMNetwork</span><span class="p">(</span><span class="n">API_LAST_KEY</span><span class="p">,</span> <span class="n">API_LAST_SECRET</span><span class="p">)</span>
+
+<span class="n">playlists</span> <span class="o">=</span> <span class="n">tracks_sp_df</span><span class="o">.</span><span class="n">playlist_id</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">song_indication</span><span class="p">(</span><span class="n">playlist_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">number_of_songs</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span> 
+
+    <span class="n">tracks</span> <span class="o">=</span> <span class="n">tracks_sp_df</span><span class="p">[</span><span class="n">tracks_sp_df</span><span class="o">.</span><span class="n">playlist_id</span> <span class="o">==</span> <span class="n">playlist_id</span><span class="p">]</span>
+    <span class="n">artists_set</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">user_artists_set</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">original_tracks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tracks</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;artists_names&#39;</span><span class="p">]])</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">tracks</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">artists_names</span><span class="p">:</span> 
+            <span class="n">artist</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_artist</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">artists_set</span><span class="p">:</span>
+                <span class="n">artists_set</span><span class="p">[</span><span class="n">artist</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">artists_set</span><span class="p">[</span><span class="n">artist</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">artists_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">artists_set</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> 
+                   <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="n">top_artists</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get_top_artists</span><span class="p">(</span><span class="n">limit</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">top_artist</span> <span class="ow">in</span> <span class="n">top_artists</span><span class="p">:</span>
+        <span class="n">artist_name</span> <span class="o">=</span> <span class="n">top_artist</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">top_artist</span><span class="o">.</span><span class="n">weight</span>
+        <span class="n">user_artists_set</span><span class="p">[</span><span class="n">artist_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+
+    <span class="n">uses_artists_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">user_artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">user_artists_set</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">user_artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+
+    <span class="n">chosen_artists</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">*</span><span class="n">user_artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> 
+                      <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="n">artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">user_artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">())}</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chosen_artists</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Sorry, this method does not work&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Take 10 at the limit!</span>
+    <span class="n">chosen_artists</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">chosen_artists</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+
+    <span class="n">top_tracks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">artist_name</span> <span class="ow">in</span> <span class="n">chosen_artists</span><span class="p">:</span> 
+        <span class="n">artist</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_artist</span><span class="p">(</span><span class="n">artist_name</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">tracks</span> <span class="o">=</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_top_tracks</span><span class="p">(</span><span class="n">limit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">tracks</span><span class="p">:</span>
+            <span class="n">top_tracks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">artist_name</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">track</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">track</span><span class="o">.</span><span class="n">weight</span><span class="p">))</span>
+
+    <span class="n">chosen_tracks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">top_tracks</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">reverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[:</span><span class="n">number_of_songs</span><span class="p">]</span>
+    <span class="n">chosen_tracks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">chosen_tracks</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">chosen_tracks</span><span class="p">,</span> <span class="n">original_tracks</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">position</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">indications</span><span class="p">,</span> <span class="n">original</span> <span class="o">=</span> <span class="n">song_indication</span><span class="p">(</span><span class="n">playlist_df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">position</span><span class="p">],</span> 
+                                        <span class="n">playlist_df</span><span class="p">[</span><span class="s1">&#39;owner_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">position</span><span class="p">],</span> 
+                                        <span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The indications are: &#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">indications</span><span class="p">:</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The original were: &#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ori</span> <span class="ow">in</span> <span class="n">original</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ori</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>The indications are: 
+(&#39;Tempo Perdido&#39;, &#39;legião urbana&#39;)
+(&#39;Pais e Filhos&#39;, &#39;legião urbana&#39;)
+(&#39;Índios&#39;, &#39;legião urbana&#39;)
+(&#39;Será&#39;, &#39;legião urbana&#39;)
+(&#39;Faroeste Caboclo&#39;, &#39;legião urbana&#39;)
+
+The original were: 
+[&#39;Sétimo Céu - Ao Vivo&#39; list([&#39;Geraldo Azevedo&#39;])]
+[&#39;Respeita januario&#39; list([&#39;Luiz Gonzaga&#39;])]
+[&#39;Não Pegue Esse Avião&#39; list([&#39;Cavaleiros do Forró&#39;])]
+[&#39;Xote das Meninas&#39; list([&#39;Luiz Gonzaga&#39;])]
+[&#39;Apenas Mais uma de Amor&#39; list([&#39;Lulu Santos&#39;])]
+[&#39;100% Você&#39; list([&#39;Chiclete Com Banana&#39;])]
+[&#39;Lanterna dos Afogados - Ao Vivo&#39; list([&#39;Maria Gadú&#39;])]
+[&#39;A Vida Não Tá Fácil Prá Ninguém (Sony Music Live)&#39; list([&#39;Jota Quest&#39;])]
+[&#39;Tempo Perdido&#39; list([&#39;Legião Urbana&#39;])]
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../evolution/" title="Project evolution" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Project evolution
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../../model_1/model/" title="Model based on track similarity" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Model based on track similarity
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.df0def68.min.js"></script>
+      <script src="../../assets/javascripts/bundle.ba57d267.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.5eca75d3.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
