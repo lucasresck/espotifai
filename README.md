@@ -5,6 +5,27 @@ We studied and implemented some k-NN algorithms to deal with the **playlist cont
 
 This is our final project for [Foundations of Data Science](https://emap.fgv.br/disciplina/mestrado/fundamentos-de-ciencia-de-dados), a Mathematical Modelling Master's subject at Getulio Vargas Foundation (FGV).
 
+Group: [Lucas Emanuel Resck Domingues](https://github.com/lucasresck) and [Lucas Machado Moschen](https://github.com/lucasmoschen).
+Professor: [Dr. Jorge Poco](https://github.com/jpocom).
+
+## Abstract
+
+This repository contains our approach to the **playlist continuation** problem. We scraped data from Spotify and Last.fm and we made an exploratory data analysis. We also implemented models of playlist continuation and we saw good results. We develop a [website](https://lucasresck.github.io/espotifai/) to expose our work.
+
+## Repository brief structure
+
+```
+├─ documents -------------------- Deliverables of our project
+├─ images ----------------------- Images for our deliverables and README
+├─ notebooks
+│  ├─ data_scrapping ------------ Notebooks to scrap data
+│  ├─ eda ----------------------- Notebooks of EDA
+│  ├─ playlist_similarity_model - Model based on playlist similarity
+│  └─ track_similarity_model ---- Model based on track similarity
+├─ report ----------------------- Our website documents
+└─ scripts ---------------------- Scripts to generate data
+```
+
 ## Usage example
 
 You can:
