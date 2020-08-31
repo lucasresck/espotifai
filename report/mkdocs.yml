@@ -1,14 +1,24 @@
 site_name: Espotifai
 
 nav:
-    - PCA of audio features: index.md
+    - Overview: index.md
+    - Related work: related_work.md
+    - Project evolution: evolution.md
+    - EDA: eda.md
+    - Model based on track similarity: model_1.md
+    - Model based on playlist similarity: model_2.md
+    - Conclusion: conclusion.md
 
 repo_url: https://github.com/lucasresck/espotifai
+
+site_url: https://lucasresck.github.io/espotifai/
         
 theme:
   name: material
   palette:
-    primary: default
+    primary: black
+    scheme: default
+    accent: red
   icon:
     repo: fontawesome/brands/github
   
