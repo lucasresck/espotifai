@@ -1,7 +1,7 @@
 # espotifai
 > Automatic Playlist Recommender.
 
-We studied and implemented some algorithms to deal with the **playlist continuation** problem. Check out [our website](https://lucasresck.github.io/espotifai/) with the report of this work.
+We studied and implemented some algorithms to deal with the **playlist continuation** problem. Check out [our website](https://lucasresck.github.io/espotifai/) with the report of this work and our [screencast](https://youtu.be/w9jelBD4zy8).
 
 This is our final project for [Foundations of Data Science](https://emap.fgv.br/disciplina/mestrado/fundamentos-de-ciencia-de-dados), a Mathematical Modelling Master's subject at Getulio Vargas Foundation (FGV).
 
