@@ -7,7 +7,21 @@ This is our final project for [Foundations of Data Science](https://emap.fgv.br/
 
 ## Usage example
 
-You can scrap the data, make an EDA and analyse the models with the notebooks provided. All of them are very well documented and the models are explained.
+You can:
+- Get a list of Last.fm users
+- Scrap their public data in Last.fm and Spotify
+- Make an exploratory data analysis of these datasets
+- Analyse both recommendation models
+
+All notebooks are very well documented and the models are explained in them.
+
+### List of users
+
+In a network propagation fashion, users are gathered from Last.fm. To do this, run:
+
+```python
+python generate_users.py
+```
 
 ### Data scraping
 
