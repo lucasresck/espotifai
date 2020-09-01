@@ -13,11 +13,10 @@ We know nowadays recommenders are extremely important, both for the greater prod
 We studied and implemented two algorithms that try to solve the problem of
 playlist continuation, inspired by [Kelen et
 al.](https://dl.acm.org/doi/10.1145/3267471.3267477) and [Pauws and
-Eggen](http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf). Both of
-them use an idea of Nearest Neighbors, but the former use a similarity among playlists and
-the latter use a similarity among tracks. The baseline model was inspired by [
-Timo  Van Niedek & Arjen P. de
-Vries](https://dl.acm.org/doi/10.1145/3267471.3267483), with random walk with
+Eggen](http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf).
+The former use a similarity among playlists, and
+the latter use a similarity among tracks. The baseline model was inspired by
+[Niedek and Vries](https://dl.acm.org/doi/10.1145/3267471.3267483), with random walk with
 restart. 
 
 ## Motivation

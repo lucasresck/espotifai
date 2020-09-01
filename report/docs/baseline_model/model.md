@@ -1,6 +1,8 @@
 # Baseline model: Random Walk
 
-## Based on the article [Timo van Niedek & Arjen P. de Vries](https://dl.acm.org/doi/pdf/10.1145/3267471.3267483)
+## Based on the article [Niedek and Vries](https://dl.acm.org/doi/pdf/10.1145/3267471.3267483)
+
+We develop a simpler model, called baseline model, in order to compare our algorithms.
 
 The ideia is to represent the playlist dataset as a bipartite graph. We use multiple random walks over it. The playlist title are used for prefiltering and ranking titles. This is the simplest way to use similarity between tracks. 
 
