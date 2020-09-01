@@ -345,13 +345,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#baseline-model" class="md-nav__link">
-    Baseline model
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -384,6 +377,18 @@
   <li class="md-nav__item">
     <a href="../../model_2/model/" title="Model based on playlist similarity" class="md-nav__link">
       Model based on playlist similarity
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../baseline_model/model/" title="Baseline model" class="md-nav__link">
+      Baseline model
     </a>
   </li>
 
@@ -510,13 +515,6 @@
           <li class="md-nav__item">
   <a href="#track-dataset" class="md-nav__link">
     Track dataset
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#baseline-model" class="md-nav__link">
-    Baseline model
   </a>
   
 </li>
@@ -1478,109 +1476,7 @@ similar</p>
 </table>
 </div>
 
-<p>We can see that published information is unavailable for a lot of tracks</p>
-<h3 id="baseline-model">Baseline model</h3>
-<p>The ideia is simple and uses the models alreadt done by Last.fm. We believe is a good start, cause they have more information about the users. We'll get the artists from the tracks and top artists from the users. After that we will take the intersection, take the top 10 artists and take their top tracks. After we'll classify and get the 10 top songs to indicate!</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Getting important variables</span>
-<span class="n">FOLDER_SPOTIFY_PATH</span> <span class="o">=</span> <span class="s1">&#39;../../data/&#39;</span>
-
-<span class="n">tracks_sp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">FOLDER_SPOTIFY_PATH</span> <span class="o">+</span> <span class="s1">&#39;sp_tracks_ready_*.pkl&#39;</span><span class="p">)</span>
-<span class="n">tracks_sp_df</span> <span class="o">=</span> <span class="n">tracks_sp_df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;artists_names&#39;</span><span class="p">,</span> <span class="s1">&#39;playlist_id&#39;</span><span class="p">]]</span>
-
-<span class="n">playlist_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">FOLDER_SPOTIFY_PATH</span> <span class="o">+</span> <span class="s1">&#39;sp_playlists.pkl&#39;</span><span class="p">)</span>
-<span class="n">playlist_df</span> <span class="o">=</span> <span class="n">playlist_df</span><span class="p">[[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;owner_id&#39;</span><span class="p">]]</span>
-
-<span class="n">API_LAST_KEY</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
-<span class="n">API_LAST_SECRET</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
-
-<span class="n">network</span> <span class="o">=</span> <span class="n">pylast</span><span class="o">.</span><span class="n">LastFMNetwork</span><span class="p">(</span><span class="n">API_LAST_KEY</span><span class="p">,</span> <span class="n">API_LAST_SECRET</span><span class="p">)</span>
-
-<span class="n">playlists</span> <span class="o">=</span> <span class="n">tracks_sp_df</span><span class="o">.</span><span class="n">playlist_id</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
-</code></pre></div>
-
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">song_indication</span><span class="p">(</span><span class="n">playlist_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">number_of_songs</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span> 
-
-    <span class="n">tracks</span> <span class="o">=</span> <span class="n">tracks_sp_df</span><span class="p">[</span><span class="n">tracks_sp_df</span><span class="o">.</span><span class="n">playlist_id</span> <span class="o">==</span> <span class="n">playlist_id</span><span class="p">]</span>
-    <span class="n">artists_set</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">user_artists_set</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="n">original_tracks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tracks</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;artists_names&#39;</span><span class="p">]])</span>
-
-    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">tracks</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">artists_names</span><span class="p">:</span> 
-            <span class="n">artist</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_artist</span><span class="p">(</span><span class="n">artist</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">artist</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">artists_set</span><span class="p">:</span>
-                <span class="n">artists_set</span><span class="p">[</span><span class="n">artist</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">else</span><span class="p">:</span> 
-                <span class="n">artists_set</span><span class="p">[</span><span class="n">artist</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
-
-    <span class="n">artists_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">artists_set</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> 
-                   <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
-
-    <span class="n">user</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-    <span class="n">top_artists</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get_top_artists</span><span class="p">(</span><span class="n">limit</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">top_artist</span> <span class="ow">in</span> <span class="n">top_artists</span><span class="p">:</span>
-        <span class="n">artist_name</span> <span class="o">=</span> <span class="n">top_artist</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">weight</span> <span class="o">=</span> <span class="n">top_artist</span><span class="o">.</span><span class="n">weight</span>
-        <span class="n">user_artists_set</span><span class="p">[</span><span class="n">artist_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
-
-    <span class="n">uses_artists_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">user_artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">user_artists_set</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-                        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">user_artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
-
-    <span class="n">chosen_artists</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">*</span><span class="n">user_artists_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> 
-                      <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="n">artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">user_artists_set</span><span class="o">.</span><span class="n">keys</span><span class="p">())}</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chosen_artists</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Sorry, this method does not work&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Take 10 at the limit!</span>
-    <span class="n">chosen_artists</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">chosen_artists</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
-
-    <span class="n">top_tracks</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">for</span> <span class="n">artist_name</span> <span class="ow">in</span> <span class="n">chosen_artists</span><span class="p">:</span> 
-        <span class="n">artist</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">get_artist</span><span class="p">(</span><span class="n">artist_name</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">tracks</span> <span class="o">=</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_top_tracks</span><span class="p">(</span><span class="n">limit</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">tracks</span><span class="p">:</span>
-            <span class="n">top_tracks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">artist_name</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">track</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">track</span><span class="o">.</span><span class="n">weight</span><span class="p">))</span>
-
-    <span class="n">chosen_tracks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">top_tracks</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">reverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)[:</span><span class="n">number_of_songs</span><span class="p">]</span>
-    <span class="n">chosen_tracks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">chosen_tracks</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">chosen_tracks</span><span class="p">,</span> <span class="n">original_tracks</span>
-</code></pre></div>
-
-<div class="highlight"><pre><span></span><code><span class="n">position</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">indications</span><span class="p">,</span> <span class="n">original</span> <span class="o">=</span> <span class="n">song_indication</span><span class="p">(</span><span class="n">playlist_df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">position</span><span class="p">],</span> 
-                                        <span class="n">playlist_df</span><span class="p">[</span><span class="s1">&#39;owner_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">position</span><span class="p">],</span> 
-                                        <span class="mi">5</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The indications are: &#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">indications</span><span class="p">:</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The original were: &#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">ori</span> <span class="ow">in</span> <span class="n">original</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">ori</span><span class="p">)</span>
-</code></pre></div>
-
-<div class="highlight"><pre><span></span><code>The indications are: 
-(&#39;Tempo Perdido&#39;, &#39;legião urbana&#39;)
-(&#39;Pais e Filhos&#39;, &#39;legião urbana&#39;)
-(&#39;Índios&#39;, &#39;legião urbana&#39;)
-(&#39;Será&#39;, &#39;legião urbana&#39;)
-(&#39;Faroeste Caboclo&#39;, &#39;legião urbana&#39;)
-
-The original were: 
-[&#39;Sétimo Céu - Ao Vivo&#39; list([&#39;Geraldo Azevedo&#39;])]
-[&#39;Respeita januario&#39; list([&#39;Luiz Gonzaga&#39;])]
-[&#39;Não Pegue Esse Avião&#39; list([&#39;Cavaleiros do Forró&#39;])]
-[&#39;Xote das Meninas&#39; list([&#39;Luiz Gonzaga&#39;])]
-[&#39;Apenas Mais uma de Amor&#39; list([&#39;Lulu Santos&#39;])]
-[&#39;100% Você&#39; list([&#39;Chiclete Com Banana&#39;])]
-[&#39;Lanterna dos Afogados - Ao Vivo&#39; list([&#39;Maria Gadú&#39;])]
-[&#39;A Vida Não Tá Fácil Prá Ninguém (Sony Music Live)&#39; list([&#39;Jota Quest&#39;])]
-[&#39;Tempo Perdido&#39; list([&#39;Legião Urbana&#39;])]
-</code></pre></div>
+<p>We can see that published information is unavailable for a lot of tracks. </p>
                 
               
               

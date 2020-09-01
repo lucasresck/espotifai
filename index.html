@@ -312,6 +312,18 @@
 
 
   <li class="md-nav__item">
+    <a href="baseline_model/model/" title="Baseline model" class="md-nav__link">
+      Baseline model
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="conclusion/" title="Conclusion" class="md-nav__link">
       Conclusion
     </a>
@@ -389,7 +401,14 @@
 <h2 id="what-this-is">What this is</h2>
 <p><strong>Espotifai</strong> is our approach to the <strong>playlist continuation problem</strong>. That is, given a playlist, how to continuate it?</p>
 <p>We know nowadays recommenders are extremely important, both for the greater production of content never seen before, and for the massive access provided by digital platforms. Music recommendation is no exception, so it is important to study and develop ways to match people and music they like or they will like.</p>
-<p>We studied and implemented two algorithms that try to solve the problem of playlist continuation, inspired by <a href="https://dl.acm.org/doi/10.1145/3267471.3267477">Kelen et al.</a> and <a href="http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf">Pauws and Eggen</a>. The former use an idea of similarity among playlists, and the latter use a similarity among tracks.</p>
+<p>We studied and implemented two algorithms that try to solve the problem of
+playlist continuation, inspired by <a href="https://dl.acm.org/doi/10.1145/3267471.3267477">Kelen et
+al.</a> and <a href="http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf">Pauws and
+Eggen</a>.
+The former use a similarity among playlists, and
+the latter use a similarity among tracks. The baseline model was inspired by
+<a href="https://dl.acm.org/doi/10.1145/3267471.3267483">Niedek and Vries</a>, with random walk with
+restart. </p>
 <h2 id="motivation">Motivation</h2>
 <p>Recommendation is pretty intrigating, because we have to know by advance what
 the person would like to listen in a specific time. That's a hard task, due to

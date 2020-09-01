@@ -326,6 +326,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../baseline_model/model/" title="Baseline model" class="md-nav__link">
+      Baseline model
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
     <a href="../conclusion/" title="Conclusion" class="md-nav__link">
       Conclusion
     </a>
@@ -417,12 +429,14 @@
 <p>There's no homogeneity in research community about playlist data. We saw that each researcher creates its own dataset. It was difficult to find playlist datasets on internet, and what we found showed us not to be very useful.</p>
 <h2 id="solution-dataset-creation">Solution: dataset creation</h2>
 <p>Last.fm is a social network about music. Using the package pyLast, we gathered data from Last.fm users, in a network process fashion: starting with a few users, we walked through their followers recursively. At the end, we had public information about many users, tracks and artists.</p>
-<p>Spotify is a music streaming service. Using the package Spotipy and the Spotify Web API we scrapped playlist data from many users. Because Spotify doesn't allow us to request user followers, we couldn't gather the data as with Pylast. So we tested the Last.fm users and we colleted their public playlists if available. At the end, he had many Spotify public playlists, as well as information about the tracks, such as the audio features, and about the artists too.</p>
+<p>Spotify is a music streaming service. Using the package Spotipy and the Spotify Web API we scrapped playlist data from many users. Because Spotify doesn't allow us to request user followers, we couldn't gather the data as with pyLast. So we tested the Last.fm users and we colleted their public playlists if available. At the end, he had many Spotify public playlists, as well as information about the tracks, such as the audio features, and about the artists too.</p>
 <h2 id="exploratory-data-analysis">Exploratory data analysis</h2>
 <p>The analysis of the data was an expected step in our project. We did a classic EDA (missing values, distributions etc.) and we also created some interesting visualizations, trying to answer questions like 'what's the genre with most tracks?'.</p>
 <h2 id="the-models">The models</h2>
 <p>Music recommendation models are not so widespread as other data science models, so we had to search for these algorithms.</p>
-<p>We tested some models, but we found computational problems. In order to solve this, we addapted them and also searched for more efficient algorithms. The two models presented are our approach to solve these problems.</p>
+<p>We tested some models, but we found computational problems. In order to solve
+this, we addapted them and also searched for more efficient algorithms. The
+two models presented are our approach to solve these problems. </p>
 <p>We implemented the models, we chose the hyperparamers and we evaluated them. Although both models aren't much advanced, the results we found was good, comparing to top models from <a href="http://www.recsyschallenge.com/2018/">ACM RecSys Challenge 2018</a>.</p>
 <h2 id="documentation">Documentation</h2>
 <p>Documenting our work was also part of the project. We created an <a href="https://github.com/lucasresck/espotifai">GitHub repository</a> to store and version our code, and we documented it. The notebooks are also detailed and explain the models. Finally, we built this website in order to expose our work, using <a href="https://www.mkdocs.org/">MkDocs</a> site generator, and we produced a <a href="https://youtu.be/w9jelBD4zy8">screencast</a>.</p>
