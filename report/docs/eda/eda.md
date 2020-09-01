@@ -1,4 +1,10 @@
-# Spotify dataset analysis
+# Exploratory Data Analysis
+
+We created two datasets: the one from Spotify and the one from Last.fm. The notebooks for dataset creation can be found [in their folder](https://github.com/lucasresck/espotifai/tree/master/notebooks/data_scraping) in our GitHub repository.
+
+The complete Spotify EDA can be viewed [here](https://github.com/lucasresck/espotifai/blob/master/notebooks/eda/spotify_analysis.ipynb), and the complete Last.fm EDA [here](https://github.com/lucasresck/espotifai/blob/master/notebooks/eda/lastfm_data_analysis.ipynb). In the following, we briefly describe the EDA process.
+
+## Spotify dataset analysis
 
 Spotify has a web API, and this API has a translation to Python called Spotipy. It allows us to search for tracks, playlists and artists data. Among all the information available, there exists what is called *audio features*, that is, musical metrics like `danceability`, `loudness` and `instrumentalness`, which could be important for recommendation systems.
 
@@ -39,8 +45,6 @@ pd.set_option('display.max_columns', None)
 # Beautiful Seaborn
 sns.set()
 ```
-
-## Initial exploration: datasets
 
 We have many datasets, and we wanna know its variables. Let's sample them.
 
@@ -348,9 +352,9 @@ artists.sample()
 
 Artists datasets are simple and autoexplanative. It's important to note `genres` features, because each cell is a list of genres. As already said, the only way to classify a song in a genre is with the genres of its artists.
 
-## Visualizations
+### Visualizations
 
-### When a track was added to a playlist?
+**When a track was added to a playlist?**
 
 
 ```python
@@ -399,7 +403,7 @@ plt.show()
 
 Most of the songs were added recently.
 
-### How much time does a track take?
+**How much time does a track take?**
 
 
 ```python
@@ -419,7 +423,7 @@ plt.show()
 
 The mode of the songs has 3min20s.
 
-### How danceable, louder, ... are the songs?
+**How danceable, louder, ... are the songs?**
 
 Audio features dataset has a lot of variables, so we explore some of them.
 
@@ -457,7 +461,7 @@ The distribution of `instrumentalness` is curious: there are tracks we may say t
 
 One thing to say is that these graphs are quite compatible with those from [Spotify's Web API](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/). It suggests that we are in the right way with our data.
 
-### How popular are the artists?
+**How popular are the artists?**
 
 
 ```python
@@ -472,7 +476,7 @@ plt.show()
 
 This distribution is very close to the distribution of the popularity of the songs, curiously.
 
-### Finnaly, what are the genres with more tracks?
+**Finnaly, what are the genres with more tracks?**
 
 
 ```python
@@ -558,7 +562,7 @@ Many of the genres as sub-sub-subgenres, as you can see:
 
 
 
-### Are there correlations between numerical variables?
+**Are there correlations between numerical variables?**
 
 Let's analyse correlation in audio features dataset.
 
@@ -581,7 +585,7 @@ We see strong correlations between
 - `valence` and `danceability`: the more valence (positiveness), the more danceable it is.
 - `instrumental` and `loudness`: we found that a instrumental song tends to be less louder.
 
-# Last.fm Dataset Analysis
+## Last.fm dataset analysis
 
 The considered datasets are: 
 
@@ -613,7 +617,7 @@ artist_df = pd.read_csv(FOLDER_PATH + 'artists.csv', sep = '\t', index_col='arti
 tag_df = pd.read_csv(FOLDER_PATH + 'tags.csv', sep = '\t', index_col='tag_id')
 ```
 
-## User Dataset
+### User dataset
 
 The information are name, subscriber, playcount, registered_since, country, age, playlists, gender, loved_tracks, recent_tracks, top_tracks, top_tags, top_albums e top_artists. I observe all the users considered don't insert age information neither gender. Create playlists in Last.fm is not a common thing too! I get the unique values in the three columns
 
@@ -891,7 +895,7 @@ display(tags.sort_values(by = 'users_listeners', ascending = False).head(10))
 </table>
 </div>
 
-## Tag Dataset
+### Tag dataset
 
 The information are: 
 
@@ -989,7 +993,7 @@ tags_complete_df.head(5)
 </table>
 </div>
 
-## Artist Dataset
+### Artist dataset
 
 The information are: 
 
@@ -1025,19 +1029,19 @@ plt.show()
 
 ![png](output_17_0.png)
 
-## Artists Similarity
+### Artists similarity
 
 Last.fm API has information about similar artists, given an artist imputed. I generate 20 similar artists from each artist of the subset of artists known from the dataset. The method of the API returns a degree of similarity, from 0 to 1. Below we can see de result. It takes long to make this graphic, so I save it. You can see the result. There are a lot of nan values because we do not have every degree of similary. 
 
 We can see there are a bigger relation in the roundness of the diagonal. This happens because the way the artist id was generated. For each user, we get its 20 top artists and numerate if the id does not exist. So, if two ids are closely, maybe it was generated by the same user, what is interesting, cause users may like similar artists.  
 
-### Subset of Artists Similary 
+**Subset of artists similary**
 
 Here we can see a subset of the matrix of artists' similarity. It's really sparse, as expected, because we get only 20 similar artists for each one. 
 
 ![Figura](heatmap.png)
 
-## Track Dataset
+### Track dataset
 
 The information are: 
 
@@ -1120,7 +1124,7 @@ tracks_complete_df.sample()
 
 We can see that published information is unavailable for a lot of tracks
 
-## Baseline model
+### Baseline model
 
 The ideia is simple and uses the models alreadt done by Last.fm. We believe is a good start, cause they have more information about the users. We'll get the artists from the tracks and top artists from the users. After that we will take the intersection, take the top 10 artists and take their top tracks. After we'll classify and get the 10 top songs to indicate!
 
@@ -1227,8 +1231,4 @@ for ori in original:
     ['Lanterna dos Afogados - Ao Vivo' list(['Maria Gadú'])]
     ['A Vida Não Tá Fácil Prá Ninguém (Sony Music Live)' list(['Jota Quest'])]
     ['Tempo Perdido' list(['Legião Urbana'])]
-
-
-## Conclusion 
-
-There are lot more information we could retrive, but we considered only a part of it, to test the initial models. It's a good API, but to get the links, it's really slow, what harms the Data Science pipelines. There is datasets already done with part of this information, but we prefered to generate cause it's more trustable and everyone can generate it. But remember it can take a long time. 
+ 

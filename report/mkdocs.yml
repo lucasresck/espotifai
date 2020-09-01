@@ -11,8 +11,8 @@ nav:
     - Conclusion: conclusion.md
 
 repo_url: https://github.com/lucasresck/espotifai
-
 site_url: https://lucasresck.github.io/espotifai/
+edit_uri: edit/master/report/docs/
         
 theme:
   name: material

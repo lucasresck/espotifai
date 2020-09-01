@@ -1,4 +1,4 @@
-# Model based on playlist similarity
+# [Model based on playlist similarity](https://github.com/lucasresck/espotifai/blob/master/notebooks/playlist_similarity_model/model.ipynb)
 
 Given a playlist, we want to add more tracks to it: it's the **playlist continuation** problem. Following [Kelen et al.](https://dl.acm.org/doi/abs/10.1145/3267471.3267477), the idea here is to define a similarity metric between two playlists, select the $k$ most similar playlists to ours, define a score metric for tracks continuing our playlist and choose the best tracks to continue it.
 
