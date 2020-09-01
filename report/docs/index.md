@@ -6,7 +6,15 @@
 
 We know nowadays recommenders are extremely important, both for the greater production of content never seen before, and for the massive access provided by digital platforms. Music recommendation is no exception, so it is important to study and develop ways to match people and music they like or they will like.
 
-We studied and implemented two algorithms that try to solve the problem of playlist continuation, inspired by [Kelen et al.](https://dl.acm.org/doi/10.1145/3267471.3267477) and [Pauws and Eggen](http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf). Both of them use an idea of k-NN, but the former use a similarity among playlists and the latter use a similarity among tracks.
+We studied and implemented two algorithms that try to solve the problem of
+playlist continuation, inspired by [Kelen et
+al.](https://dl.acm.org/doi/10.1145/3267471.3267477) and [Pauws and
+Eggen](http://ismir2002.ircam.fr/proceedings/OKPROC02-FP07-4.pdf). Both of
+them use an idea of Nearest Neighbors, but the former use a similarity among playlists and
+the latter use a similarity among tracks. The baseline model was inspired by [
+Timo  Van Niedek & Arjen P. de
+Vries](https://dl.acm.org/doi/10.1145/3267471.3267483), with random walk with
+restart. 
 
 ## Motivation
 
