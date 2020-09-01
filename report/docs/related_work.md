@@ -20,9 +20,8 @@ participant groups of the ACM RecSys Challenge 2018, [Kelen et
 al.](https://dl.acm.org/doi/10.1145/3267471.3267477) (2018) inspired us in our
 playlist-based similarity algorithm. [Bonnin and
 Jannach](https://dl.acm.org/doi/10.1145/2652481) (2014) gave us an
-introduction and an overview of the playlist continuation problem. Also was [A
-Large-Scale Evaluation of Acoustic and Subjective Music Similarity
-Measures](https://www.ee.columbia.edu/~dpwe/pubs/ismir03-sim.pdf) (2003). The
-baseline was based on the Random Walk based algorithm from [
-Timo  Van Niedek & Arjen P. de Vries](https://dl.acm.org/citation.cfm?id=3267483)
+introduction and an overview of the playlist continuation problem. Also was
+[Berenzweig et al.](https://www.ee.columbia.edu/~dpwe/pubs/ismir03-sim.pdf) (2003). The
+baseline was based on the Random Walk based algorithm from
+[Niedek and Vries](https://dl.acm.org/citation.cfm?id=3267483) (2018).
 
