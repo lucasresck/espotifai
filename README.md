@@ -61,8 +61,8 @@ The template for an EDA of both datasets are inside the folder [`notebooks/eda/`
 Three models are implemented and documented inside [`notebooks/`](https://github.com/lucasresck/espotifai/tree/master/notebooks).
 
 The first is baseline model, with a random walk in a bipartite graph
-(simplest similarity matrix). The others are Nearest Neighbors based models. The first is a model based on
-track similarity, and the second is based on playlist similarity. Each model
+(simplest similarity matrix). The second is a model based on
+track similarity, and the third is based on playlist similarity. Each model
 has its notebook detailing the math behind it, as well as the code.
 
 
