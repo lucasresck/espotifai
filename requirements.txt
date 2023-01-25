@@ -5,5 +5,5 @@ pylast==3.3.0
 requests==2.24.0
 scipy
 seaborn==0.10.1
-spotipy==2.13.0
+spotipy==2.22.1
 tqdm
