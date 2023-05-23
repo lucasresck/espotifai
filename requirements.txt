@@ -2,7 +2,7 @@ matplotlib
 numpy==1.22.0
 pandas
 pylast==3.3.0
-requests==2.24.0
+requests==2.31.0
 scipy
 seaborn==0.10.1
 spotipy==2.22.1
